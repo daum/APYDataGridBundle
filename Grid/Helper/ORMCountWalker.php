@@ -71,6 +71,9 @@ class ORMCountWalker extends TreeWalkerAdapter
             }
         }
 
+        $AST->selectClause->selectExpressions=array();
+
+
         // Put the count expression in the first position
         $distinct = $this->_getQuery()->getHint(self::HINT_DISTINCT);
         array_unshift($AST->selectClause->selectExpressions,
