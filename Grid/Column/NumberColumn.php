@@ -57,7 +57,7 @@ class NumberColumn extends Column
         $this->setRuleSet($this->getParam('ruleSet'));
         $this->setCurrencyCode($this->getParam('currencyCode'));
         $this->setFractional($this->getParam('fractional', false));
-        $this->setMaxFractionDigits($this->getParam('maxFractionDigits',null));
+        $this->setMaxFractionDigits($this->getParam('maxFractionDigits', null));
         if ($this->style === \NumberFormatter::DURATION) {
             $this->setLocale('en');
             $this->setRuleSet($this->getParam('ruleSet', '%in-numerals')); // or '%with-words'
@@ -107,8 +107,9 @@ class NumberColumn extends Column
             if ($this->ruleSet !== null) {
                 $formatter->setTextAttribute(\NumberFormatter::DEFAULT_RULESET, $this->ruleSet);
             }
+            
             if($this->maxFractionDigits !== null){
-              $formatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS,$this->maxFractionDigits);
+                $formatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $this->maxFractionDigits);
             }
 
             $formatter->setAttribute(\NumberFormatter::GROUPING_USED, $this->grouping);
@@ -130,7 +131,7 @@ class NumberColumn extends Column
             } else {
                 $value = $formatter->format($value);
             }
-            
+
             if (intl_is_failure($formatter->getErrorCode())) {
                 throw new TransformationFailedException($formatter->getErrorMessage());
             }
@@ -260,12 +261,12 @@ class NumberColumn extends Column
 
     public function setMaxFractionDigits($maxFractionDigits)
     {
-      $this->maxFractionDigits = $maxFractionDigits;
+        $this->maxFractionDigits = $maxFractionDigits;
     }
 
     public function getMaxFractionDigits()
     {
-      return $this->maxFractionDigits;
+        return $this->maxFractionDigits;
     }
 
     public function getType()
