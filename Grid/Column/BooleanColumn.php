@@ -12,6 +12,7 @@
 
 namespace APY\DataGridBundle\Grid\Column;
 
+use APY\DataGridBundle\Grid\Filter;
 class BooleanColumn extends Column
 {
     public function __initialize(array $params)
@@ -56,4 +57,18 @@ class BooleanColumn extends Column
     {
         return 'boolean';
     }
+    
+    public function getFilters($source)
+    {
+    	$filters = array();
+    
+    	$data = $this->data;
+    	$value = $data['from'][0];
+    	
+    	if($value!='')
+    		$filters[] =  new Filter(self::OPERATOR_EQ,$value);
+    
+    	return $filters;
+    }
+    
 }
