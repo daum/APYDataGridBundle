@@ -61,3 +61,26 @@ $grid->setSource($source);
 ```
 
 **Warning**: You must use "andWhere" instead of "Where" statement otherwise column filtering won't work. Same thing about the order and the group (addOrder, addGroup).
+
+
+## 3. Using aliased columns with manipulated or customer queries.
+Sometimes you may need to use an aliased (a*b AS c) column for more complex calculations.  Using these in conjunction with the filters and other grid functionality is not difficult!  
+
+The steps are fairly simple:
+
+1. Manipulate or inject a query with an aliased column such as `myTable.a*myTable.b AS my_calculated_total`.
+2. Create the grid column representation: 
+
+```php
+$myCol = new NumberColumn(array('id' => 'myTotal',
+                                'title' => 'My Aliased Field',
+                                'field' => 'my_calculated_total', // The aliased name
+                                'isManualField' => true, // Indicate it is a manual (or aliased) field
+                                'isAggregate' => false, // Defaults to false, set true if using aggregate func. like SUM()
+                                'source' => true, // Indicates the grid should retrieve it from the source (the query)
+                                ));
+$grid->addColumn($myCol,10);
+ 
+```
+
+And you are all set.  From there you will be able to use the field as if it was any other field in the grid, filters and all!
