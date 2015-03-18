@@ -89,6 +89,7 @@ abstract class Column
     protected $separator;
     protected $isManualField;
     protected $isAggregate;
+    protected $sqlForManualField;
 
     protected $dataJunction = self::DATA_CONJUNCTION;
 
@@ -125,6 +126,7 @@ abstract class Column
         $this->setOperatorsVisible($this->getParam('operatorsVisible', true));
         $this->setIsManualField($this->getParam('isManualField', false));
         $this->setIsAggregate($this->getParam('isAggregate', false));
+        $this->setSqlForManualField($this->getParam('sqlForManualField'));
 
         // Order is important for the order display
         $this->setOperators($this->getParam('operators', array(
@@ -859,6 +861,16 @@ abstract class Column
     public function getIsAggregate()
     {
         return $this->isAggregate;
+    }
+    
+    public function setSqlForManualField($sqlForManualField)
+    {
+        $this->sqlForManualField = $sqlForManualField;
+    }
+
+    public function getSqlForManualField()
+    {
+        return $this->sqlForManualField;
     }
 
 }

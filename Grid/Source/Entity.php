@@ -288,8 +288,14 @@ class Entity extends Source
                 foreach ($filters as $filter) {
                     $operator = $this->normalizeOperator($filter->getOperator());
 
-                    $q = $this->query->expr()->$operator($this->getFieldName($column, false), "?$bindIndex");
-
+                    if($column->getIsManualField()&&$column->getSqlForManualField())
+                    {
+                        $q = $this->query->expr()->$operator($column->getSqlForManualField(), "?$bindIndex");
+                    }
+                    else
+                    {
+                        $q = $this->query->expr()->$operator($this->getFieldName($column, false), "?$bindIndex");
+                    }
                     if ($filter->getOperator() == Column::OPERATOR_NLIKE) {
                         $q = $this->query->expr()->not($q);
                     }
