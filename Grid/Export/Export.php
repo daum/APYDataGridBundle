@@ -284,7 +284,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
         $titles = array();
         foreach ($this->grid->getColumns() as $column) {
             if ($column->isVisible(true)) {
-                $titles[] = utf8_decode($translator->trans($column->getTitle()));
+                $titles[] = utf8_decode($translator->trans(/** @Ignore */$column->getTitle()));
             }
         }
 
@@ -338,9 +338,15 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
              || $this->hasBlock($block = 'grid_'.$id.'_column_'.$column->getRenderBlockId().'_cell')
              || $this->hasBlock($block = 'grid_'.$id.'_column_'.$column->getType().'_cell')
              || $this->hasBlock($block = 'grid_'.$id.'_column_'.$column->getParentType().'_cell')))
+             || $this->hasBlock($block = 'grid_'.$id.'_column_id_'.$column->getRenderBlockId().'_cell')
+             || $this->hasBlock($block = 'grid_'.$id.'_column_type_'.$column->getType().'_cell')
+             || $this->hasBlock($block = 'grid_'.$id.'_column_type_'.$column->getParentType().'_cell')
              || $this->hasBlock($block = 'grid_column_'.$column->getRenderBlockId().'_cell')
              || $this->hasBlock($block = 'grid_column_'.$column->getType().'_cell')
-             || $this->hasBlock($block = 'grid_column_'.$column->getParentType().'_cell'))
+             || $this->hasBlock($block = 'grid_column_'.$column->getParentType().'_cell')
+             || $this->hasBlock($block = 'grid_column_id_'.$column->getRenderBlockId().'_cell')
+             || $this->hasBlock($block = 'grid_column_type_'.$column->getType().'_cell')
+             || $this->hasBlock($block = 'grid_column_type_'.$column->getParentType().'_cell'))
             {
                 $return[] = $this->renderBlock($block, array('grid' => $this->grid, 'column' => $column, 'row' => $row, 'value' => $value, 'sourceValue' => $sourceValue));
             } else {
@@ -453,7 +459,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
         $value = strip_tags($value);
 
         // Convert Special Characters in HTML
-        $value = html_entity_decode($value);
+        $value = html_entity_decode($value, ENT_QUOTES);
 
         // Trim
         $value = trim($value);
@@ -646,7 +652,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      */
     public function getParameter($name)
     {
-        if (!hasParameter($name)) {
+        if (!$this->hasParameter($name)) {
             throw new \InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
         }
 

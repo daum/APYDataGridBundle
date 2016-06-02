@@ -19,11 +19,25 @@ class Row
     protected $color;
     protected $legend;
     protected $primaryField;
+    protected $entity;
+    protected $repository;
 
     public function __construct()
     {
         $this->fields = array();
         $this->color = '';
+    }
+
+    public function setRepository($repository)
+    {
+        $this->repository = $repository;
+    }
+
+    public function getEntity()
+    {
+        $primaryKeyValue = current($this->getPrimaryKeyValue());
+
+        return $this->repository->find($primaryKeyValue);
     }
 
     public function setField($rowId, $value)
@@ -88,7 +102,11 @@ class Row
 
     public function getPrimaryFieldValue()
     {
-        if(is_array($this->primaryField)) {
+        if (null === $this->primaryField) {
+            throw new \InvalidArgumentException('Primary column must be defined');
+        }
+
+        if (is_array($this->primaryField)) {
             return array_intersect_key($this->fields, array_flip($this->primaryField));
         }
 
@@ -99,7 +117,7 @@ class Row
     {
         $primaryField = $this->getPrimaryFieldValue();
 
-        if(is_array($primaryField)) {
+        if (is_array($primaryField)) {
             return $primaryField;
         }
 

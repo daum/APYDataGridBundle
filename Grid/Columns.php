@@ -14,7 +14,7 @@ namespace APY\DataGridBundle\Grid;
 
 use APY\DataGridBundle\Grid\Column\Column;
 use APY\DataGridBundle\Grid\Helper\ColumnsIterator;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class Columns implements \IteratorAggregate, \Countable
 {
@@ -26,7 +26,7 @@ class Columns implements \IteratorAggregate, \Countable
      */
     protected $securityContext;
 
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(AuthorizationCheckerInterface $securityContext)
     {
         $this->securityContext = $securityContext;
     }
@@ -129,13 +129,14 @@ class Columns implements \IteratorAggregate, \Countable
     /**
      * Sets order of Columns passing an array of column ids
      * If the list of ids is uncomplete, the remaining columns will be
-     * placed after
+     * placed after if keepOtherColumns is true 
      *
      * @param array $columnIds
+     * @param boolean $keepOtherColumns
      *
      * @return self
      */
-    public function setColumnsOrder(array $columnIds)
+    public function setColumnsOrder(array $columnIds, $keepOtherColumns = true)
     {
         $reorderedColumns = array();
         $columnsIndexedByIds = array();
@@ -151,7 +152,11 @@ class Columns implements \IteratorAggregate, \Countable
             }
         }
 
-        $this->columns = array_merge($reorderedColumns, array_values($columnsIndexedByIds));
+		if ($keepOtherColumns) {
+			$this->columns = array_merge($reorderedColumns, array_values($columnsIndexedByIds));
+		} else {
+			$this->columns = $reorderedColumns;
+		}
         
         return $this;
     }

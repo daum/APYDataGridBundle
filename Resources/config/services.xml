@@ -14,12 +14,13 @@
         <service id="grid.twig_extension" class="%grid.twig_extension.class%" public="false">
             <tag name="twig.extension" />
             <argument type="service" id="router" />
+            <argument>%apy_data_grid.theme%</argument>
             <call method="setPagerFanta">
                 <argument>%apy_data_grid.pagerfanta%</argument>
             </call>
         </service>
 
-        <service id="grid" class="%grid.class%" scope="prototype">
+        <service id="grid" class="%grid.class%" shared="false">
             <argument type="service" id="service_container" />
             <call method="setLimits">
                 <argument>%apy_data_grid.limits%</argument>
@@ -36,6 +37,9 @@
             <call method="setActionsColumnSize">
                 <argument>%apy_data_grid.actions_columns_size%</argument>
             </call>
+            <call method="setActionsColumnTitle">
+                <argument>%apy_data_grid.actions_columns_title%</argument>
+            </call>
         </service>
 
         <service id="grid.manager" class="%grid.manager.class%">
@@ -46,7 +50,7 @@
             <argument type="service" id="annotation_reader" />
         </service>
 
-        <service id="grid.mapping.manager" class="APY\DataGridBundle\Grid\Mapping\Metadata\Manager" scope="prototype">
+        <service id="grid.mapping.manager" class="APY\DataGridBundle\Grid\Mapping\Metadata\Manager" shared="false">
             <argument type="service" id="form.factory"/>
             <call method="addDriver">
                 <argument type="service" id="grid.metadata.driver.annotation" />
@@ -59,4 +63,5 @@
         </service>
 
     </services>
+    
 </container>
