@@ -933,6 +933,7 @@ abstract class Column
     {
         $this->sqlForManualField = $sqlForManualField;
     }
+    
     public function getSqlForManualField()
     {
         return $this->sqlForManualField;
