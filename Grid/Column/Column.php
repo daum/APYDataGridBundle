@@ -97,6 +97,8 @@ abstract class Column
     protected $isManualField;
     protected $isAggregate;
     protected $usePrefixTitle;
+    protected $sqlForManualField;
+
 
     protected $dataJunction = self::DATA_CONJUNCTION;
 
@@ -135,6 +137,8 @@ abstract class Column
         $this->setIsManualField($this->getParam('isManualField', false));
         $this->setIsAggregate($this->getParam('isAggregate', false));
         $this->setUsePrefixTitle($this->getParam('usePrefixTitle', true));
+        $this->setSqlForManualField($this->getParam('sqlForManualField'));
+
         
         // Order is important for the order display
         $this->setOperators($this->getParam('operators', array(
@@ -925,6 +929,13 @@ abstract class Column
         return $this;
     }
  
-    
+    public function setSqlForManualField($sqlForManualField)
+    {
+        $this->sqlForManualField = $sqlForManualField;
+    }
+    public function getSqlForManualField()
+    {
+        return $this->sqlForManualField;
+    }    
     
 }
