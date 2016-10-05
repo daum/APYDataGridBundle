@@ -41,7 +41,7 @@ abstract class Column
     const OPERATOR_NSLIKE  = 'nslike';
     const OPERATOR_RSLIKE  = 'rslike';
     const OPERATOR_LSLIKE  = 'lslike';
-    
+
     const OPERATOR_ISNULL  = 'isNull';
     const OPERATOR_ISNOTNULL  = 'isNotNull';
 
@@ -98,6 +98,7 @@ abstract class Column
     protected $isAggregate;
     protected $usePrefixTitle;
     protected $sqlForManualField;
+    protected $tooltip;
 
 
     protected $dataJunction = self::DATA_CONJUNCTION;
@@ -139,7 +140,7 @@ abstract class Column
         $this->setUsePrefixTitle($this->getParam('usePrefixTitle', true));
         $this->setSqlForManualField($this->getParam('sqlForManualField'));
 
-        
+
         // Order is important for the order display
         $this->setOperators($this->getParam('operators', array(
             self::OPERATOR_EQ,
@@ -169,6 +170,7 @@ abstract class Column
         $this->setSeparator($this->getParam('separator', "<br />"));
         $this->setExport($this->getParam('export'));
         $this->setClass($this->getParam('class'));
+        $this->setTooltip($this->getParam('tooltip'));
     }
 
     protected function getParam($id, $default = null)
@@ -333,8 +335,8 @@ abstract class Column
     public function isFiltered()
     {
         return ( (isset($this->data['from']) && $this->isQueryValid($this->data['from']) && $this->data['from'] != static::DEFAULT_VALUE)
-              || (isset($this->data['to']) && $this->isQueryValid($this->data['to']) && $this->data['to'] != static::DEFAULT_VALUE)
-              || (isset($this->data['operator']) && ($this->data['operator'] === self::OPERATOR_ISNULL || $this->data['operator'] === self::OPERATOR_ISNOTNULL)) );
+            || (isset($this->data['to']) && $this->isQueryValid($this->data['to']) && $this->data['to'] != static::DEFAULT_VALUE)
+            || (isset($this->data['operator']) && ($this->data['operator'] === self::OPERATOR_ISNULL || $this->data['operator'] === self::OPERATOR_ISNOTNULL)) );
     }
 
     public function setFilterable($filterable)
@@ -608,7 +610,7 @@ abstract class Column
                             $filters[] = new Filter(self::OPERATOR_GT, $this->data['from']);
                         }
                         if ($this->data['to'] != static::DEFAULT_VALUE) {
-                                $filters[] = new Filter(self::OPERATOR_LT, $this->data['to']);
+                            $filters[] = new Filter(self::OPERATOR_LT, $this->data['to']);
                         }
                         break;
                     case self::OPERATOR_BTWE:
@@ -928,15 +930,26 @@ abstract class Column
         $this->usePrefixTitle = $usePrefixTitle;
         return $this;
     }
- 
+
     public function setSqlForManualField($sqlForManualField)
     {
         $this->sqlForManualField = $sqlForManualField;
     }
-    
+
     public function getSqlForManualField()
     {
         return $this->sqlForManualField;
-    }    
-    
+    }
+
+
+    public function getTooltip()
+    {
+        return $this->tooltip;
+    }
+
+    public function setTooltip($tooltip)
+    {
+        $this->tooltip = $tooltip;
+    }
+
 }
