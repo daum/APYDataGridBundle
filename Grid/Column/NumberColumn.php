@@ -146,19 +146,6 @@ class NumberColumn extends Column
         return '';
     }
 
-    public function getFilters($source)
-    {
-        $parentFilters = parent::getFilters($source);
-
-        $filters = array();
-        foreach($parentFilters as $filter) {
-            // Transforme in number for ODM
-            $filters[] = ($filter->getValue() === null) ? $filter : $filter->setValue($filter->getValue() + 0);
-        }
-
-        return $filters;
-    }
-
     public function setStyle($style)
     {
         if (!isset(static::$styles[$style])) {
