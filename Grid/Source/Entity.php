@@ -24,6 +24,9 @@ use Doctrine\ORM\Tools\Pagination\CountWalker;
 
 class Entity extends Source
 {
+    const DOT_DQL_ALIAS_PH = '__dot__';
+    const COLON_DQL_ALIAS_PH = '__col__';
+	
     /**
      * @var \Doctrine\ORM\EntityManager
      */
@@ -170,7 +173,8 @@ class Entity extends Source
                 }
             }
 
-            $alias = str_replace('.', '::', $column->getId());
+            $alias = $this->fromColIdToAlias($column->getId());
+
         } elseif (strpos($name, ':') !== false) {
             $previousParent = $this->getTableAlias();
             $alias = $name;
@@ -790,4 +794,15 @@ class Entity extends Source
     {
         return $this->tableAlias;
     }
+	
+    protected function fromColIdToAlias($colId)
+    {
+        return str_replace(['.', ':'], [self::DOT_DQL_ALIAS_PH, self::COLON_DQL_ALIAS_PH], $colId);
+    }
+
+    protected function fromAliasToColId($alias)
+    {
+        return str_replace([self::DOT_DQL_ALIAS_PH, self::COLON_DQL_ALIAS_PH], ['.', ':'], $alias);
+    }
+
 }
