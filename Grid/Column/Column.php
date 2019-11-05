@@ -99,6 +99,7 @@ abstract class Column
     protected $usePrefixTitle;
     protected $sqlForManualField;
     protected $tooltip;
+    protected $allowUserToToggleVisibility;
 
 
     protected $dataJunction = self::DATA_CONJUNCTION;
@@ -139,6 +140,7 @@ abstract class Column
         $this->setIsAggregate($this->getParam('isAggregate', false));
         $this->setUsePrefixTitle($this->getParam('usePrefixTitle', true));
         $this->setSqlForManualField($this->getParam('sqlForManualField'));
+        $this->setAllowUserToToggleVisibility($this->getParam('allowUserToggleVisibility',true));
 
 
         // Order is important for the order display
@@ -951,5 +953,22 @@ abstract class Column
     {
         $this->tooltip = $tooltip;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAllowUserToToggleVisibility()
+    {
+        return $this->allowUserToToggleVisibility;
+    }
+
+    /**
+     * @param mixed $allowUserToToggleVisibility
+     */
+    public function setAllowUserToToggleVisibility($allowUserToToggleVisibility)
+    {
+        $this->allowUserToToggleVisibility = $allowUserToToggleVisibility;
+    }
+
 
 }
