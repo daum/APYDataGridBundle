@@ -140,7 +140,7 @@ abstract class Column
         $this->setIsAggregate($this->getParam('isAggregate', false));
         $this->setUsePrefixTitle($this->getParam('usePrefixTitle', true));
         $this->setSqlForManualField($this->getParam('sqlForManualField'));
-        $this->setAllowUserToToggleVisibility($this->getParam('allowUserToggleVisibility',true));
+        $this->setAllowUserToToggleVisibility($this->getParam('allowUserToToggleVisibility',true));
 
 
         // Order is important for the order display
