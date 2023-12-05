@@ -450,17 +450,17 @@ abstract class Column
         $result = [];
 
         $hasValue = false;
-        if ($this->data['from'] ?? null != $this::DEFAULT_VALUE) {
+        if (isset($this->data['from']) && $this->data['from'] != $this::DEFAULT_VALUE) {
             $result['from'] = $this->data['from'];
             $hasValue = true;
         }
 
-        if ($this->data['to'] ?? null != $this::DEFAULT_VALUE) {
+        if (isset($this->data['to']) && $this->data['to'] != $this::DEFAULT_VALUE) {
             $result['to'] = $this->data['to'];
             $hasValue = true;
         }
 
-        $isNullOperator = (isset($this->data['operator']) && ($this->data['operator'] === self::OPERATOR_ISNULL || $this->data['operator'] === self::OPERATOR_ISNOTNULL) );
+        $isNullOperator = (isset($this->data['operator']) && ($this->data['operator'] === self::OPERATOR_ISNULL || $this->data['operator'] === self::OPERATOR_ISNOTNULL));
         if ($hasValue || $isNullOperator) {
             $result['operator'] = $this->data['operator'];
         }
