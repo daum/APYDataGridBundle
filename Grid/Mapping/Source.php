@@ -25,7 +25,17 @@ class Source
 
     public function __construct($metadata = array())
     {
-        $this->columns = (isset($metadata['columns']) && $metadata['columns'] != '') ? array_map('trim', explode(',', $metadata['columns'])) : array();
+
+        if(isset($metadata['columns']) && !empty($metadata['columns'])){
+            if(is_array($metadata['columns'])){
+                $this->columns = $metadata['columns'];
+            } else {
+                $this->columns = array_map('trim', explode(',', $metadata['columns']));
+            }
+        }else {
+            $this->columns = [];
+        }
+
         $this->filterable = isset($metadata['filterable']) ? $metadata['filterable'] : true;
         $this->sortable = isset($metadata['sortable']) ? $metadata['sortable'] : true;
         $this->groups = (isset($metadata['groups']) && $metadata['groups'] != '') ? (array) $metadata['groups'] : array('default');
