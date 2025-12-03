@@ -27,6 +27,9 @@ use APY\DataGridBundle\Grid\Column\Column;
 use APY\DataGridBundle\Grid\Column\MassActionColumn;
 use APY\DataGridBundle\Grid\Source\Source;
 use APY\DataGridBundle\Grid\Export\ExportInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Environment;
 
 class Grid implements GridInterface
 {
@@ -64,6 +67,8 @@ class Grid implements GridInterface
      * @var \Symfony\Component\Security\Core\Authorization\AuthorizationChecker
      */
     protected $securityContext;
+
+    protected Environment $twig;
 
     /**
      * @var string
@@ -294,6 +299,8 @@ class Grid implements GridInterface
      */
     private $config;
 
+    protected TokenStorageInterface $tokenStorage;
+
     /**
      * Constructor
      *
@@ -301,7 +308,7 @@ class Grid implements GridInterface
      * @param string    $id set if you are using more then one grid inside controller
      * @param GridConfigInterface|null $config The grid configuration.
      */
-    public function __construct($container, $id = '', GridConfigInterface $config = null)
+    public function __construct($container, AuthorizationCheckerInterface $authorizationChecker,TokenStorageInterface $tokenStorage, Environment $twig, $id = '', GridConfigInterface $config = null)
     {
         $this->container = $container;
         $this->config = $config;
@@ -309,9 +316,10 @@ class Grid implements GridInterface
         $this->router = $container->get('router');
         $this->request = $container->get('request_stack')->getCurrentRequest();
         $this->session = $this->request->getSession();
-        $this->securityContext = $container->get('security.authorization_checker');
-
+        $this->securityContext = $authorizationChecker;
+        $this->twig = $twig;
         $this->id = $id;
+        $this->tokenStorage = $tokenStorage;
 
         $this->columns = new Columns($this->securityContext);
 
@@ -2128,7 +2136,7 @@ class Grid implements GridInterface
             if ($view === null) {
                 return $parameters;
             } else {
-                return new Response($this->container->get('twig')->render($view, $parameters, $response));
+                return new Response($this->twig->render($view, $parameters, $response));
             }
         }
     }
