@@ -81,7 +81,7 @@ class Metadata
      * @return \SplObjectStorage
      * @throws \Exception
      */
-    public function getColumnsFromMapping($columnExtensions)
+    public function getColumnsFromMapping($columnExtensions): \SplObjectStorage
     {
         $columns = new \SplObjectStorage();
 
@@ -93,7 +93,7 @@ class Metadata
             if ($columnExtensions->hasExtensionForColumnType($type)) {
                 $column = clone $columnExtensions->getExtensionForColumnType($type);
                 $column->__initialize($params);
-                $columns->attach($column);
+                $columns->offsetSet($column);
             } else {
                 throw new \Exception(sprintf("No suitable Column Extension found for column type: %s", $type));
             }

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @package APY\DataGridBundle\Tests
  */
-class GridBuilderTest extends \PHPUnit_Framework_TestCase
+class GridBuilderTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -28,7 +28,7 @@ class GridBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testAddUnexpectedType()
     {
-        $this->setExpectedException('APY\DataGridBundle\Grid\Exception\UnexpectedTypeException');
+        $this->expectException('APY\DataGridBundle\Grid\Exception\UnexpectedTypeException');
 
         $this->builder->add('foo', 123);
         $this->builder->add('foo', array('test'));
@@ -41,7 +41,7 @@ class GridBuilderTest extends \PHPUnit_Framework_TestCase
         $this->factory->expects($this->once())
                       ->method('createColumn')
                       ->with('foo', 'text', array())
-                      ->willReturn($this->getMock('APY\DataGridBundle\Grid\Column\Column'));
+                      ->willReturn($this->createMock('APY\DataGridBundle\Grid\Column\Column'));
 
         $this->builder->add('foo', 'text');
 
@@ -53,7 +53,7 @@ class GridBuilderTest extends \PHPUnit_Framework_TestCase
         $this->factory->expects($this->never())->method('createColumn');
 
         $this->assertFalse($this->builder->has('foo'));
-        $this->builder->add('foo', $this->getMock('APY\DataGridBundle\Grid\Column\Column'));
+        $this->builder->add('foo', $this->createMock('APY\DataGridBundle\Grid\Column\Column'));
         $this->assertTrue($this->builder->has('foo'));
     }
 
@@ -65,17 +65,17 @@ class GridBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUnknown()
     {
-        $this->setExpectedException(
+        $this->expectException(
             'APY\DataGridBundle\Grid\Exception\InvalidArgumentException',
-            'The column with the name "foo" does not exist.'
         );
+        $this->expectExceptionMessage('The column with the name "foo" does not exist.');
 
         $this->builder->get('foo');
     }
 
     public function testGetExplicitColumnType()
     {
-        $expectedColumn = $this->getMock('APY\DataGridBundle\Grid\Column\Column');
+        $expectedColumn = $this->createMock('APY\DataGridBundle\Grid\Column\Column');
 
         $this->factory->expects($this->once())
                       ->method('createColumn')
@@ -94,7 +94,7 @@ class GridBuilderTest extends \PHPUnit_Framework_TestCase
         $this->factory->expects($this->once())
                       ->method('createColumn')
                       ->with('foo', 'text', array())
-                      ->willReturn($this->getMock('APY\DataGridBundle\Grid\Column\Column'));
+                      ->willReturn($this->createMock('APY\DataGridBundle\Grid\Column\Column'));
 
         $this->builder->add('foo', 'text');
 
@@ -111,7 +111,7 @@ class GridBuilderTest extends \PHPUnit_Framework_TestCase
         $this->factory->expects($this->once())
                       ->method('createColumn')
                       ->with('foo', 'text', array())
-                      ->willReturn($this->getMock('APY\DataGridBundle\Grid\Column\Column'));
+                      ->willReturn($this->createMock('APY\DataGridBundle\Grid\Column\Column'));
 
         $this->builder->add('foo', 'text');
 
@@ -134,17 +134,17 @@ class GridBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $self = $this;
 
-        $this->container = $this->getMock('Symfony\Component\DependencyInjection\Container');
+        $this->container = $this->createMock('Symfony\Component\DependencyInjection\Container');
         $this->container->expects($this->any())
                         ->method('get')
                         ->will($this->returnCallback(function ($param) use($self) {
                             switch ($param) {
                                 case 'router':
-                                    return $self->getMock('Symfony\Component\Routing\RouterInterface');
+                                    return $self->createMock('Symfony\Component\Routing\RouterInterface');
                                     break;
                                 case 'request':
                                     $request = new Request(array(), array(), array('key' => 'value'));
@@ -152,16 +152,16 @@ class GridBuilderTest extends \PHPUnit_Framework_TestCase
                                     return $request;
                                     break;
                                 case 'security.context':
-                                    return $self->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
+                                    return $self->createMock('Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface');
                                     break;
                             }
                         }));
 
-        $this->factory = $this->getMock('APY\DataGridBundle\Grid\GridFactoryInterface');
+        $this->factory = $this->createMock('APY\DataGridBundle\Grid\GridFactoryInterface');
         $this->builder = new GridBuilder($this->container, $this->factory, 'name');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->factory = null;
         $this->builder = null;

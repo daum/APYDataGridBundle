@@ -19,7 +19,7 @@ interface GridTypeInterface
      *
      * @return void
      */
-    public function buildGrid(GridBuilder $builder, array $options = array());
+    public function buildGrid(GridBuilder $builder, array $options = array()): void;
 
     /**
      * Configures the options for this type.
@@ -28,12 +28,12 @@ interface GridTypeInterface
      *
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver);
+    public function configureOptions(OptionsResolver $resolver): void;
 
     /**
      * Returns the name of this type.
      *
      * @return string The name of this type.
      */
-    public function getName();
+    public function getName(): string;
 }

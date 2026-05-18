@@ -75,7 +75,7 @@ class ActionsColumn extends Column
         return $this;
     }
 
-    public function isVisible($isExported = false)
+    public function isVisible($isExported = false): bool
     {
         if ($isExported) {
             return false;
@@ -95,7 +95,7 @@ class ActionsColumn extends Column
      * @param $row
      * @return array
      */
-    public function getActionsToRender($row)
+    public function getActionsToRender($row): array
     {
         $list = $this->rowActions;
         foreach($list as $i=>$a) {

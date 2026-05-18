@@ -12,16 +12,18 @@
 
 namespace APY\DataGridBundle\Grid\Mapping;
 
-/**
- * @Annotation
- */
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::TARGET_PROPERTY | \Attribute::IS_REPEATABLE)]
 class Column
 {
     protected $metadata;
     protected $groups;
 
-    public function __construct($metadata)
+    public function __construct(...$metadata)
     {
+        if (count($metadata) === 1 && isset($metadata[0]) && is_array($metadata[0])) {
+            $metadata = $metadata[0];
+        }
+
         $this->metadata = $metadata;
         $this->groups = isset($metadata['groups']) ? (array) $metadata['groups'] : array('default');
     }

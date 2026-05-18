@@ -18,7 +18,6 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 use APY\DataGridBundle\Grid\Action\MassActionInterface;
 use APY\DataGridBundle\Grid\Action\RowActionInterface;
@@ -308,7 +307,7 @@ class Grid implements GridInterface
      * @param string    $id set if you are using more then one grid inside controller
      * @param GridConfigInterface|null $config The grid configuration.
      */
-    public function __construct($container, AuthorizationCheckerInterface $authorizationChecker,TokenStorageInterface $tokenStorage, Environment $twig, $id = '', GridConfigInterface $config = null)
+    public function __construct($container, AuthorizationCheckerInterface $authorizationChecker,TokenStorageInterface $tokenStorage, Environment $twig, $id = '', ?GridConfigInterface $config = null)
     {
         $this->container = $container;
         $this->config = $config;
@@ -334,7 +333,7 @@ class Grid implements GridInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize()
+    public function initialize(): static
     {
         $config = $this->config;
 
@@ -411,7 +410,7 @@ class Grid implements GridInterface
     /**
      * {@inheritdoc}
      */
-    public function handleRequest(Request $request)
+    public function handleRequest(Request $request): void
     {
         if (null === $this->source) {
             throw new \LogicException('The source of the grid must be set.');
@@ -444,7 +443,6 @@ class Grid implements GridInterface
 
         $this->prepare();
 
-        return $this;
     }
 
     /**
@@ -456,7 +454,7 @@ class Grid implements GridInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function setSource(Source $source)
+    public function setSource(Source $source): \APY\DataGridBundle\Grid\Grid
     {
         if ($this->source !== null) {
             throw new \InvalidArgumentException('The source of the grid is already set.');
@@ -493,7 +491,7 @@ class Grid implements GridInterface
 
         $this->createHash();
 
-        $this->requestData = (array) $this->request->get($this->hash);
+        $this->requestData = (array) $this->request->query->all($this->hash);
 
         $this->processPersistence();
 
@@ -612,7 +610,7 @@ class Grid implements GridInterface
         if ($actionId > -1 && '' !== $actionId) {
             if (array_key_exists($actionId, $this->massActions)) {
                 $action = $this->massActions[$actionId];
-                $actionAllKeys = (boolean)$this->getFromRequest(self::REQUEST_QUERY_MASS_ACTION_ALL_KEYS_SELECTED);
+                $actionAllKeys = (bool)$this->getFromRequest(self::REQUEST_QUERY_MASS_ACTION_ALL_KEYS_SELECTED);
                 $actionKeys = $actionAllKeys == false ? array_keys((array) $this->getFromRequest(MassActionColumn::ID)) : array();
 
                 $this->processSessionData();
@@ -620,9 +618,9 @@ class Grid implements GridInterface
                     $this->page = 0;
                     $this->limit = 0;
                 }
-                
+
                 $this->prepare();
-                
+
                 if($actionAllKeys == true){
                     foreach($this->rows as $row){
                         $actionKeys[]=$row->getPrimaryFieldValue();
@@ -662,7 +660,7 @@ class Grid implements GridInterface
      *
      * @throws \OutOfBoundsException
      */
-    protected function processExports($exportId)
+    protected function processExports($exportId): bool
     {
         if ($exportId > -1 && '' !== $exportId) {
             if (array_key_exists($exportId, $this->exports)) {
@@ -674,7 +672,7 @@ class Grid implements GridInterface
                 $this->prepare();
 
                 $export = $this->exports[$exportId];
-                if ($export instanceof ContainerAwareInterface) {
+                if (is_callable(array($export, 'setContainer'))) {
                     $export->setContainer($this->container);
                 }
                 $export->computeData($this);
@@ -699,7 +697,7 @@ class Grid implements GridInterface
      *
      * @throws \OutOfBoundsException
      */
-    protected function processTweaks($tweakId)
+    protected function processTweaks($tweakId): bool
     {
         if ($tweakId != null) {
             if (array_key_exists($tweakId, $this->tweaks)) {
@@ -1000,7 +998,7 @@ class Grid implements GridInterface
      *
      * @throws \Exception
      */
-    protected function prepare()
+    protected function prepare(): \APY\DataGridBundle\Grid\Grid
     {
         if ($this->prepared) {
             return $this;
@@ -1091,11 +1089,9 @@ class Grid implements GridInterface
      *
      * @return mixed Data associated with the key or null if the key is not found
      */
-    protected function getFromRequest($key)
+    protected function getFromRequest($key): mixed
     {
-        if (isset($this->requestData[$key])) {
-            return $this->requestData[$key];
-        }
+        return $this->requestData[$key] ?? null;
     }
 
     /**
@@ -1105,11 +1101,9 @@ class Grid implements GridInterface
      *
      * @return mixed Data associated with the key or null if the key is not found
      */
-    protected function get($key)
+    protected function get($key): mixed
     {
-        if (isset($this->sessionData[$key])) {
-            return $this->sessionData[$key];
-        }
+        return $this->sessionData[$key] ?? null;
     }
 
     /**
@@ -1155,7 +1149,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function addColumn($column, $position = 0)
+    public function addColumn($column, $position = 0): \APY\DataGridBundle\Grid\Grid
     {
         $this->lazyAddColumn[] = array('column' => $column, 'position' => $position);
 
@@ -1169,7 +1163,7 @@ class Grid implements GridInterface
      *
      * @return Column
      */
-    public function getColumn($columnId)
+    public function getColumn($columnId): Column
     {
         foreach ($this->lazyAddColumn as $column) {
             if ($column['column']->getId() == $columnId) {
@@ -1185,7 +1179,7 @@ class Grid implements GridInterface
      *
      * @return Column\Column[]|Columns
      */
-    public function getColumns()
+    public function getColumns(): array|Columns
     {
         return $this->columns;
     }
@@ -1196,7 +1190,7 @@ class Grid implements GridInterface
      * @param $columnId
      * @return boolean
      */
-    public function hasColumn($columnId)
+    public function hasColumn($columnId): bool
     {
         foreach ($this->lazyAddColumn as $column) {
             if ($column['column']->getId() == $columnId) {
@@ -1214,7 +1208,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setColumns(Columns $columns)
+    public function setColumns(Columns $columns): \APY\DataGridBundle\Grid\Grid
     {
         $this->columns = $columns;
 
@@ -1231,7 +1225,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setColumnsOrder(array $columnIds, $keepOtherColumns = true)
+    public function setColumnsOrder(array $columnIds, $keepOtherColumns = true): \APY\DataGridBundle\Grid\Grid
     {
         $this->columns->setColumnsOrder($columnIds, $keepOtherColumns);
 
@@ -1245,7 +1239,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function addMassAction(MassActionInterface $action)
+    public function addMassAction(MassActionInterface $action): \APY\DataGridBundle\Grid\Grid
     {
         if ($action->getRole() === null || $this->securityContext->isGranted($action->getRole())) {
             $this->massActions[] = $action;
@@ -1259,7 +1253,7 @@ class Grid implements GridInterface
      *
      * @return Action\MassAction[]
      */
-    public function getMassActions()
+    public function getMassActions(): array
     {
         return $this->massActions;
     }
@@ -1273,7 +1267,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function addTweak($title, array $tweak, $id = null, $group = null)
+    public function addTweak($title, array $tweak, $id = null, $group = null): \APY\DataGridBundle\Grid\Grid
     {
         if ($id !== null && !preg_match('/^[0-9a-zA-Z_\+-]+$/', $id)) {
             throw new \InvalidArgumentException(sprintf('Tweak id "%s" is malformed. The id have to match this regex ^[0-9a-zA-Z_\+-]+', $id));
@@ -1295,7 +1289,7 @@ class Grid implements GridInterface
      *
      * @return array
      */
-    public function getTweaks()
+    public function getTweaks(): array
     {
         $separator = strpos($this->getRouteUrl(), '?') ? '&' : '?';
         $url = $this->getRouteUrl() . $separator . $this->getHash() . '[' . Grid::REQUEST_QUERY_TWEAK . ']=';
@@ -1316,7 +1310,7 @@ class Grid implements GridInterface
      *
      * @return array
      */
-    public function getTweak($id)
+    public function getTweak($id): array
     {
         $tweaks = $this->getTweaks();
         if (isset($tweaks[$id])) {
@@ -1331,7 +1325,7 @@ class Grid implements GridInterface
      *
      * @return array
      */
-    public function getTweaksGroup($group)
+    public function getTweaksGroup($group): array
     {
         $tweaksGroup = $this->getTweaks();
 
@@ -1356,7 +1350,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function addRowAction(RowActionInterface $action)
+    public function addRowAction(RowActionInterface $action): \APY\DataGridBundle\Grid\Grid
     {
         if ($action->getRole() === null || $this->securityContext->isGranted($action->getRole())) {
             $this->rowActions[$action->getColumn()][] = $action;
@@ -1370,7 +1364,7 @@ class Grid implements GridInterface
      *
      * @return Action\RowAction[]
      */
-    public function getRowActions()
+    public function getRowActions(): array
     {
         return $this->rowActions;
     }
@@ -1384,7 +1378,7 @@ class Grid implements GridInterface
      *
      * @throws \Exception
      */
-    public function setTemplate($template)
+    public function setTemplate($template): \APY\DataGridBundle\Grid\Grid
     {
         if ($template !== null) {
             if ($template instanceof \Twig_Template) {
@@ -1405,7 +1399,7 @@ class Grid implements GridInterface
      *
      * @return Twig_Template
      */
-    public function getTemplate()
+    public function getTemplate(): Twig_Template
     {
         return $this->get(self::REQUEST_QUERY_TEMPLATE);
     }
@@ -1417,7 +1411,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function addExport(ExportInterface $export)
+    public function addExport(ExportInterface $export): \APY\DataGridBundle\Grid\Grid
     {
         if ($export->getRole() === null || $this->securityContext->isGranted($export->getRole())) {
             $this->exports[] = $export;
@@ -1431,7 +1425,7 @@ class Grid implements GridInterface
      *
      * @return Export[]
      */
-    public function getExports()
+    public function getExports(): array
     {
         return $this->exports;
     }
@@ -1441,7 +1435,7 @@ class Grid implements GridInterface
      *
      * @return Export[]
      */
-    public function getExportResponse()
+    public function getExportResponse(): array
     {
         return $this->exportResponse;
     }
@@ -1451,7 +1445,7 @@ class Grid implements GridInterface
      *
      * @return Export[]
      */
-    public function getMassActionResponse()
+    public function getMassActionResponse(): array
     {
         return $this->massActionResponse;
     }
@@ -1464,7 +1458,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setRouteParameter($parameter, $value)
+    public function setRouteParameter($parameter, $value): \APY\DataGridBundle\Grid\Grid
     {
         $this->routeParameters[$parameter] = $value;
 
@@ -1476,7 +1470,7 @@ class Grid implements GridInterface
      *
      * @return array
      */
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return $this->routeParameters;
     }
@@ -1488,7 +1482,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setRouteUrl($routeUrl)
+    public function setRouteUrl($routeUrl): \APY\DataGridBundle\Grid\Grid
     {
         $this->routeUrl = $routeUrl;
 
@@ -1500,10 +1494,10 @@ class Grid implements GridInterface
      *
      * @return string
      */
-    public function getRouteUrl()
+    public function getRouteUrl(): string
     {
         if ($this->routeUrl === null) {
-            $this->routeUrl = $this->router->generate($this->request->get('_route'), $this->getRouteParameters());
+            $this->routeUrl = $this->router->generate($this->request->attributes->get('_route'), $this->getRouteParameters());
         }
 
         return $this->routeUrl;
@@ -1527,7 +1521,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    protected function setFilters(array $filters, $permanent = true)
+    protected function setFilters(array $filters, $permanent = true): \APY\DataGridBundle\Grid\Grid
     {
         foreach ($filters as $columnId => $value) {
             if ($permanent) {
@@ -1548,7 +1542,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setPermanentFilters(array $filters)
+    public function setPermanentFilters(array $filters): \APY\DataGridBundle\Grid\Grid
     {
         return $this->setFilters($filters);
     }
@@ -1560,7 +1554,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setDefaultFilters(array $filters)
+    public function setDefaultFilters(array $filters): \APY\DataGridBundle\Grid\Grid
     {
         return $this->setFilters($filters, false);
     }
@@ -1572,7 +1566,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setDefaultOrder($columnId, $order)
+    public function setDefaultOrder($columnId, $order): \APY\DataGridBundle\Grid\Grid
     {
         $order = strtolower($order);
         $this->defaultOrder = "$columnId|$order";
@@ -1587,7 +1581,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setId($id)
+    public function setId($id): \APY\DataGridBundle\Grid\Grid
     {
         $this->id = $id;
 
@@ -1599,7 +1593,7 @@ class Grid implements GridInterface
      *
      * @return string
      */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
@@ -1611,7 +1605,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setPersistence($persistence)
+    public function setPersistence($persistence): \APY\DataGridBundle\Grid\Grid
     {
         $this->persistence = $persistence;
 
@@ -1623,7 +1617,7 @@ class Grid implements GridInterface
      *
      * @return boolean
      */
-    public function getPersistence()
+    public function getPersistence(): bool
     {
         return $this->persistence;
     }
@@ -1649,7 +1643,7 @@ class Grid implements GridInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function setLimits($limits)
+    public function setLimits($limits): \APY\DataGridBundle\Grid\Grid
     {
         if (is_array($limits)) {
             if ((int) key($limits) === 0) {
@@ -1671,7 +1665,7 @@ class Grid implements GridInterface
      *
      * @return array
      */
-    public function getLimits()
+    public function getLimits(): array
     {
         return $this->limits;
     }
@@ -1681,7 +1675,7 @@ class Grid implements GridInterface
      *
      * @return mixed
      */
-    public function getLimit()
+    public function getLimit(): mixed
     {
         return $this->limit;
     }
@@ -1693,7 +1687,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setDefaultLimit($limit)
+    public function setDefaultLimit($limit): \APY\DataGridBundle\Grid\Grid
     {
         $this->defaultLimit = (int) $limit;
 
@@ -1707,7 +1701,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setDefaultPage($page)
+    public function setDefaultPage($page): \APY\DataGridBundle\Grid\Grid
     {
         $this->defaultPage = (int) $page - 1;
 
@@ -1721,7 +1715,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setDefaultTweak($tweakId)
+    public function setDefaultTweak($tweakId): \APY\DataGridBundle\Grid\Grid
     {
         $this->defaultTweak = $tweakId;
 
@@ -1737,7 +1731,7 @@ class Grid implements GridInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function setPage($page)
+    public function setPage($page): \APY\DataGridBundle\Grid\Grid
     {
         if ((int) $page >= 0) {
             $this->page = (int) $page;
@@ -1753,7 +1747,7 @@ class Grid implements GridInterface
      *
      * @return int
      */
-    public function getPage()
+    public function getPage(): int
     {
         return $this->page;
     }
@@ -1763,7 +1757,7 @@ class Grid implements GridInterface
      *
      * @return mixed
      */
-    public function getRows()
+    public function getRows(): mixed
     {
         return $this->rows;
     }
@@ -1773,7 +1767,7 @@ class Grid implements GridInterface
      *
      * @return float
      */
-    public function getPageCount()
+    public function getPageCount(): float
     {
         $pageCount = 1;
         if ($this->getLimit() > 0) {
@@ -1787,7 +1781,7 @@ class Grid implements GridInterface
      *
      * @return mixed
      */
-    public function getTotalCount()
+    public function getTotalCount(): mixed
     {
         return $this->totalCount;
     }
@@ -1801,7 +1795,7 @@ class Grid implements GridInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function setMaxResults($maxResults = null)
+    public function setMaxResults($maxResults = null): \APY\DataGridBundle\Grid\Grid
     {
         if ((is_int($maxResults) && $maxResults < 0) && $maxResults !== null) {
             throw new \InvalidArgumentException('Max results must be a positive number.');
@@ -1817,7 +1811,7 @@ class Grid implements GridInterface
      *
      * @return boolean
      */
-    public function isFiltered()
+    public function isFiltered(): bool
     {
         foreach ($this->columns as $column) {
             if ($column->isFiltered()) {
@@ -1833,7 +1827,7 @@ class Grid implements GridInterface
      *
      * @return bool
      */
-    public function isTitleSectionVisible()
+    public function isTitleSectionVisible(): bool
     {
         if ($this->showTitles == true) {
             foreach ($this->columns as $column) {
@@ -1849,7 +1843,7 @@ class Grid implements GridInterface
      *
      * @return bool
      */
-    public function isFilterSectionVisible()
+    public function isFilterSectionVisible(): bool
     {
         if ($this->showFilters == true) {
             foreach ($this->columns as $column) {
@@ -1867,7 +1861,7 @@ class Grid implements GridInterface
      *
      * @return bool return true if pager is visible
      */
-    public function isPagerSectionVisible()
+    public function isPagerSectionVisible(): bool
     {
         $limits = $this->getLimits();
 
@@ -1884,7 +1878,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function hideFilters()
+    public function hideFilters(): \APY\DataGridBundle\Grid\Grid
     {
         $this->showFilters = false;
 
@@ -1896,7 +1890,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function hideTitles()
+    public function hideTitles(): \APY\DataGridBundle\Grid\Grid
     {
         $this->showTitles = false;
 
@@ -1910,7 +1904,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function addColumnExtension($extension)
+    public function addColumnExtension($extension): \APY\DataGridBundle\Grid\Grid
     {
         $this->columns->addExtension($extension);
 
@@ -1924,7 +1918,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setPrefixTitle($prefixTitle)
+    public function setPrefixTitle($prefixTitle): \APY\DataGridBundle\Grid\Grid
     {
         $this->prefixTitle = $prefixTitle;
 
@@ -1936,7 +1930,7 @@ class Grid implements GridInterface
      *
      * @return string
      */
-    public function getPrefixTitle()
+    public function getPrefixTitle(): string
     {
         return $this->prefixTitle;
     }
@@ -1948,7 +1942,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setNoDataMessage($noDataMessage)
+    public function setNoDataMessage($noDataMessage): \APY\DataGridBundle\Grid\Grid
     {
         $this->noDataMessage = $noDataMessage;
 
@@ -1960,7 +1954,7 @@ class Grid implements GridInterface
      *
      * @return string
      */
-    public function getNoDataMessage()
+    public function getNoDataMessage(): string
     {
         return $this->noDataMessage;
     }
@@ -1972,7 +1966,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setNoResultMessage($noResultMessage)
+    public function setNoResultMessage($noResultMessage): \APY\DataGridBundle\Grid\Grid
     {
         $this->noResultMessage = $noResultMessage;
 
@@ -1984,7 +1978,7 @@ class Grid implements GridInterface
      *
      * @return string
      */
-    public function getNoResultMessage()
+    public function getNoResultMessage(): string
     {
         return $this->noResultMessage;
     }
@@ -1996,7 +1990,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setHiddenColumns($columnIds)
+    public function setHiddenColumns($columnIds): \APY\DataGridBundle\Grid\Grid
     {
         $this->lazyHiddenColumns = (array) $columnIds;
 
@@ -2011,7 +2005,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setVisibleColumns($columnIds)
+    public function setVisibleColumns($columnIds): \APY\DataGridBundle\Grid\Grid
     {
         $this->lazyVisibleColumns = (array) $columnIds;
 
@@ -2025,7 +2019,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function showColumns($columnIds)
+    public function showColumns($columnIds): \APY\DataGridBundle\Grid\Grid
     {
         foreach ((array) $columnIds as $columnId) {
             $this->lazyHideShowColumns[$columnId] = true;
@@ -2041,7 +2035,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function hideColumns($columnIds)
+    public function hideColumns($columnIds): \APY\DataGridBundle\Grid\Grid
     {
         foreach ((array) $columnIds as $columnId) {
             $this->lazyHideShowColumns[$columnId] = false;
@@ -2057,7 +2051,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setActionsColumnSize($size)
+    public function setActionsColumnSize($size): \APY\DataGridBundle\Grid\Grid
     {
         $this->actionsColumnSize = $size;
 
@@ -2071,7 +2065,7 @@ class Grid implements GridInterface
      *
      * @return self
      */
-    public function setActionsColumnTitle($title)
+    public function setActionsColumnTitle($title): \APY\DataGridBundle\Grid\Grid
     {
         $this->actionsColumnTitle = (string) $title;
 
@@ -2108,7 +2102,7 @@ class Grid implements GridInterface
      *
      * @return Response A Response instance
      */
-    public function getGridResponse($param1 = null, $param2 = null, Response $response = null)
+    public function getGridResponse($param1 = null, $param2 = null, ?Response $response = null): Response
     {
         $isReadyForRedirect = $this->isReadyForRedirect();
 
@@ -2149,7 +2143,7 @@ class Grid implements GridInterface
      *
      * @return array Raw data of columns
      */
-    public function getRawData($columnNames = null, $namedIndexes = true)
+    public function getRawData($columnNames = null, $namedIndexes = true): array
     {
         if ($columnNames === null) {
             foreach ($this->getColumns() as $column) {
@@ -2181,7 +2175,7 @@ class Grid implements GridInterface
      * @return Filter[]
      * @throws \Exception
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         if ($this->hash === null) {
             throw new \Exception('getFilters method is only available in the manipulate callback function or after the call of the method isRedirected of the grid.');
@@ -2234,7 +2228,7 @@ class Grid implements GridInterface
      * @return Filter
      * @throws \Exception
      */
-    public function getFilter($columnId)
+    public function getFilter($columnId): ?Filter
     {
         if ($this->hash === null) {
             throw new \Exception('getFilters method is only available in the manipulate callback function or after the call of the method isRedirected of the grid.');
@@ -2253,7 +2247,7 @@ class Grid implements GridInterface
      * @return boolean
      * @throws \Exception
      */
-    public function hasFilter($columnId)
+    public function hasFilter($columnId): bool
     {
         if ($this->hash === null) {
             throw new \Exception('hasFilters method is only available in the manipulate callback function or after the call of the method isRedirected of the grid.');

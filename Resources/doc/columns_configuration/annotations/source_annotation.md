@@ -1,8 +1,8 @@
-Source Annotation for a class
+Source Attribute for a class
 =============================
 
-The Source annotation for a class allows to configure the grid.  
-It's optional if you have declare Column annotation for your properties.
+The Source attribute for a class allows to configure the grid.
+It's optional if you have declared Column attributes for your properties.
 
 ## Example
 ```php
@@ -10,11 +10,9 @@ It's optional if you have declare Column annotation for your properties.
 ...
 use APY\DataGridBundle\Grid\Mapping as GRID;
 
-/**
- * @GRID\Source(columns="id, type")
- * @GRID\Source(columns="id, type, date", groups={"admin", "backend"})
- * @GRID\Source(columns="id, type", groups="list", groupBy={"type"})
- */
+#[GRID\Source(columns: ['id', 'type'])]
+#[GRID\Source(columns: ['id', 'type', 'date'], groups: ['admin', 'backend'])]
+#[GRID\Source(columns: ['id', 'type'], groups: 'list', groupBy: ['type'])]
 class Product
 {
     protected $id;

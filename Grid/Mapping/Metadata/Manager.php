@@ -35,7 +35,7 @@ class Manager
      * @todo remove this hack
      * @return \APY\DataGridBundle\Grid\Mapping\Metadata\DriverHeap
      */
-    public function getDrivers()
+    public function getDrivers(): \APY\DataGridBundle\Grid\Mapping\Metadata\DriverHeap
     {
         return clone $this->drivers;
     }

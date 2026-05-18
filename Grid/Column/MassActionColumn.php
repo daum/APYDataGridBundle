@@ -29,7 +29,7 @@ class MassActionColumn extends Column
         ));
     }
 
-    public function isVisible($isExported = false)
+    public function isVisible($isExported = false): bool
     {
         if ($isExported) {
             return false;

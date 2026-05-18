@@ -26,7 +26,7 @@ class RankColumn extends BlankColumn
         $this->setAlign($this->getParam('align', 'center'));
     }
 
-    public function renderCell($value, $row, $router)
+    public function renderCell($value, $row, $router): string
     {
         return $this->rank++;
     }

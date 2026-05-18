@@ -42,7 +42,7 @@ class GridFactory implements GridFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create($type = null, Source $source = null, array $options = array())
+    public function create($type = null, ?Source $source = null, array $options = array()): Grid
     {
         return $this->createBuilder($type, $source, $options)->getGrid();
     }
@@ -50,7 +50,7 @@ class GridFactory implements GridFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createBuilder($type = 'grid', Source $source = null, array $options = array())
+    public function createBuilder($type = 'grid', ?Source $source = null, array $options = array()): GridBuilder
     {
         $type    = $this->resolveType($type);
         $options = $this->resolveOptions($type, $source, $options);
@@ -66,7 +66,7 @@ class GridFactory implements GridFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createColumn($name, $type, array $options = array())
+    public function createColumn($name, $type, array $options = array()): Column
     {
         if (!$type instanceof Column) {
             if (!is_string($type)) {
@@ -96,7 +96,7 @@ class GridFactory implements GridFactoryInterface
      *
      * @return GridTypeInterface
      */
-    private function resolveType($type)
+    private function resolveType($type): GridTypeInterface
     {
         if (!$type instanceof GridTypeInterface) {
             if (!is_string($type)) {
@@ -118,7 +118,7 @@ class GridFactory implements GridFactoryInterface
      *
      * @return array
      */
-    private function resolveOptions(GridTypeInterface $type, Source $source = null, array $options = array())
+    private function resolveOptions(GridTypeInterface $type, ?Source $source = null, array $options = array()): array
     {
         $resolver = new OptionsResolver();
 

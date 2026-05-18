@@ -1,7 +1,7 @@
-Column Annotation for a class
+Column Attribute for a class
 =============================
 
-The Column annotation for a class allows to add a non-mapped source column.
+The Column attribute for a class allows to add a non-mapped source column.
 
 Example:
 ```php
@@ -9,10 +9,7 @@ Example:
 ...
 use APY\DataGridBundle\Grid\Mapping as GRID;
 
-/**
- * Add custom columns to the grid
- * @GRID\Column(id="myColumn", size="120", type="text")
- */
+#[GRID\Column(id: 'myColumn', size: '120', type: 'text')]
 class Product
 {
 

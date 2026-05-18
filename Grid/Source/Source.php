@@ -40,7 +40,7 @@ abstract class Source implements DriverInterface
      * @param \APY\DataGridBundle\Grid\Row $row
      * @return \APY\DataGridBundle\Grid\Row|null
      */
-    public function prepareRow($row)
+    public function prepareRow($row): ?\APY\DataGridBundle\Grid\Row
     {
         if (is_callable($this->prepareRowCallback)) {
             return call_user_func($this->prepareRowCallback, $row);
@@ -53,7 +53,7 @@ abstract class Source implements DriverInterface
      * @param callable $callback
      * @return $this
      */
-    public function manipulateQuery($callback = null)
+    public function manipulateQuery($callback = null): static
     {
         $this->prepareQueryCallback = $callback;
 
@@ -64,7 +64,7 @@ abstract class Source implements DriverInterface
     /**
      * @param \Closure $callback
      */
-    public function manipulateRow(\Closure $callback = null)
+    public function manipulateRow(?\Closure $callback = null)
     {
         $this->prepareRowCallback = $callback;
 
@@ -81,7 +81,7 @@ abstract class Source implements DriverInterface
      * @param int $gridDataJunction Grid data junction
      * @return \APY\DataGridBundle\Grid\Rows
      */
-    abstract public function execute($columns, $page = 0, $limit = 0, $maxResults = null, $gridDataJunction = Column::DATA_CONJUNCTION);
+    abstract public function execute($columns, $page = 0, $limit = 0, $maxResults = null, $gridDataJunction = Column::DATA_CONJUNCTION): \APY\DataGridBundle\Grid\Rows;
 
     /**
      * Get Total count of data items
@@ -89,7 +89,7 @@ abstract class Source implements DriverInterface
      * @param int $maxResults
      * @return int
      */
-    abstract public function getTotalCount($maxResults = null);
+    abstract public function getTotalCount($maxResults = null): int;
 
     /**
      * Set container
@@ -98,13 +98,13 @@ abstract class Source implements DriverInterface
      * @param  $container
      * @return void
      */
-    abstract public function initialise($container);
+    abstract public function initialise($container): void;
 
     /**
      * @abstract
      * @param $columns
      */
-    abstract public function getColumns($columns);
+    abstract public function getColumns($columns): void;
 
     public function getClassColumns($class, $group = 'default')
     {
@@ -136,7 +136,7 @@ abstract class Source implements DriverInterface
      * @param array $ids
      * @return void
      */
-    abstract public function delete(array $ids);
+    abstract public function delete(array $ids): void;
 
     /**
      * Use data instead of fetching the source
@@ -144,11 +144,10 @@ abstract class Source implements DriverInterface
      * @param array|object $data
      * @return void
      */
-    public function setData($data)
+    public function setData($data): void
     {
         $this->data = $data;
 
-        return $this;
     }
 
     /**
@@ -156,7 +155,7 @@ abstract class Source implements DriverInterface
      *
      * @return array|object
      */
-    public function getData()
+    public function getData(): array|object
     {
         return $this->data;
     }
@@ -166,7 +165,7 @@ abstract class Source implements DriverInterface
      *
      * @return boolean
      */
-    public function isDataLoaded()
+    public function isDataLoaded(): bool
     {
         return $this->data !== null;
     }
@@ -176,7 +175,7 @@ abstract class Source implements DriverInterface
      *
      * @return array
      */
-    protected function getItemsFromData($columns)
+    protected function getItemsFromData($columns): array
     {
         $items = array();
 
@@ -231,7 +230,7 @@ abstract class Source implements DriverInterface
      * @param int $limit
      * @return \APY\DataGridBundle\DataGrid\Rows
      */
-    public function executeFromData($columns, $page = 0, $limit = 0, $maxResults = null)
+    public function executeFromData($columns, $page = 0, $limit = 0, $maxResults = null): \APY\DataGridBundle\DataGrid\Rows
     {
         // Populate from data
         $items = $this->getItemsFromData($columns);
@@ -540,7 +539,7 @@ abstract class Source implements DriverInterface
      *
      * @return int
      */
-    public function getTotalCountFromData($maxResults = null)
+    public function getTotalCountFromData($maxResults = null): int
     {
         return $maxResults === null ? $this->count : min($this->count, $maxResults);
     }
@@ -552,7 +551,7 @@ abstract class Source implements DriverInterface
      * @param string $type for array type, will serialize datas
      * @return string the input, serialized for arrays or without accents for strings
      */
-    protected function prepareStringForLikeCompare($input, $type = null)
+    protected function prepareStringForLikeCompare($input, $type = null): string
     {
         if ($type === 'array') {
             $outputString = str_replace(':{i:0;', ':{', serialize($input));

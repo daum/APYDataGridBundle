@@ -47,7 +47,7 @@ class DateTimeColumn extends Column
         $this->setTimezone($this->getParam('timezone',date_default_timezone_get()));
     }
 
-    public function isQueryValid($query)
+    public function isQueryValid($query): bool
     {
         $result = array_filter((array) $query, array($this, "isDateTime"));
 
@@ -71,7 +71,7 @@ class DateTimeColumn extends Column
         return $filters;
     }
 
-    public function renderCell($value, $row, $router)
+    public function renderCell($value, $row, $router): string
     {
         $value = $this->getDisplayedValue($value);
         
@@ -115,7 +115,7 @@ class DateTimeColumn extends Column
      * @param null|string timezone
      * @return \Datetime
      */
-    protected function getDatetime($data, $timezone = null)
+    protected function getDatetime($data, $timezone = null): \Datetime
     {
         if($data instanceof \DateTime) {
             return $data;

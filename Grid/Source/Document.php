@@ -80,7 +80,7 @@ class Document extends Source
         $this->group = $group;
     }
 
-    public function initialise($container)
+    public function initialise($container): void
     {
         $this->manager = $container->get('doctrine.odm.mongodb.document_manager');
         $this->odmMetadata = $this->manager->getClassMetadata($this->documentName);
@@ -93,9 +93,9 @@ class Document extends Source
 
     /**
      * @param \APY\DataGridBundle\Grid\Columns $columns
-     * @return null
+     * @return void
      */
-    public function getColumns($columns)
+    public function getColumns($columns): void
     {
         foreach ($this->metadata->getColumnsFromMapping($columns) as $column) {
             $columns->addColumn($column);
@@ -169,7 +169,7 @@ class Document extends Source
     /**
      * @return QueryBuilder
      */
-    protected function getQueryBuilder()
+    protected function getQueryBuilder(): QueryBuilder
     {
         //If a custom QB has been provided, use that
         //Otherwise create our own basic one
@@ -189,7 +189,7 @@ class Document extends Source
      * @param int $gridDataJunction  Grid data junction
      * @return \APY\DataGridBundle\Grid\Rows
      */
-    public function execute($columns, $page = 0, $limit = 0, $maxResults = null, $gridDataJunction = Column::DATA_CONJUNCTION)
+    public function execute($columns, $page = 0, $limit = 0, $maxResults = null, $gridDataJunction = Column::DATA_CONJUNCTION): \APY\DataGridBundle\Grid\Rows
     {
         $this->query = $this->getQueryBuilder();
 
@@ -319,7 +319,7 @@ class Document extends Source
      * @throws \Exception if getter for field does not exists
      * @return \APY\DataGridBundle\Grid\Row $row with referenced fields
      */
-    protected function addReferencedFields(Row $row, $resource)
+    protected function addReferencedFields(Row $row, $resource): \APY\DataGridBundle\Grid\Row
     {
         foreach ($this->referencedColumns as $parent => $subColumns) {
             $node = $this->getClassProperties($resource);
@@ -340,7 +340,7 @@ class Document extends Source
         return $row;
     }
 
-    public function getTotalCount($maxResults = null)
+    public function getTotalCount($maxResults = null): int
     {
         if ($maxResults !== null) {
             return min(array($maxResults, $this->count));
@@ -503,7 +503,7 @@ class Document extends Source
         }
     }
 
-    public function delete(array $ids)
+    public function delete(array $ids): void
     {
         $repository = $this->getRepository();
 

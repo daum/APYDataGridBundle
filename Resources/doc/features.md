@@ -10,7 +10,7 @@
 - Row actions
 - Supports mapped fields with Entity source
 - Securing the columns, actions and export with security roles
-- Annotations and PHP configuration
+- Attributes and PHP configuration
 - External filters box
 - Ajax loading
 - Pagination (You can also use Pagerfanta)

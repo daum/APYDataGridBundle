@@ -35,7 +35,7 @@ class DefaultController extends Controller
 |parameter|Type|Default value|Description|
 |:--:|:--|:--|:--|:--|
 |entity|string|_none_|Entity expression. _\<ProjectName\>\<BundleName\>:\<DocumentName\>_|
-|group|string|default|Group of annotations used. See [groups parameter in annotation](../columns_configuration/annotations/column_annotation_property.md#available-attributes)|
+|group|string|default|Group of attributes used. See [groups parameter in attribute](../columns_configuration/annotations/column_annotation_property.md#available-attributes)|
 
 ## Example
 

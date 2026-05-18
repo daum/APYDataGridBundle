@@ -120,19 +120,13 @@ namespace MyProject\MyBundle\Entity
 use Doctrine\ORM\Mapping as ORM;
 use APY\DataGridBundle\Grid\Mapping as GRID;
 
-/**
- * @GRID\Source(columns="id, my_datetime")
- */
+#[GRID\Source(columns: ['id', 'my_datetime'])]
 class MyEntity
 {
-    /*
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /*
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     protected $my_datetime;
 }
 ```
@@ -155,7 +149,7 @@ The following documents are available :
 * [Getting Started With APYDataGridBundle](getting_started.md)
 * [Setting the Grid Source](source/index.md)
 * [Display the Grid (Twig template)](template/index.md)
-* [Columns Configuration with Annotations](columns_configuration/index.md)
+* [Columns Configuration with Attributes](columns_configuration/index.md)
 * [Grid Configuration with PHP](grid_configuration/index.md)
 * [Export](export/index.md)
 * [APYDataGridBundle Configuration Reference](configuration.md)

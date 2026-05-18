@@ -64,7 +64,7 @@ class DSVExport extends Export
      *
      * @return string
      */
-    public function getDelimiter()
+    public function getDelimiter(): string
     {
         return $this->delimiter;
     }
@@ -76,7 +76,7 @@ class DSVExport extends Export
      *
      * @return self
      */
-    public function setDelimiter($delimiter)
+    public function setDelimiter($delimiter): \APY\DataGridBundle\Grid\Export\DSVExport
     {
         $this->delimiter = $delimiter;
 
@@ -88,7 +88,7 @@ class DSVExport extends Export
      *
      * @return string
      */
-    public function getWithBOM()
+    public function getWithBOM(): string
     {
         return $this->withBOM;
     }
@@ -100,7 +100,7 @@ class DSVExport extends Export
      *
      * @return self
      */
-    public function setWithBOM($withBOM)
+    public function setWithBOM($withBOM): \APY\DataGridBundle\Grid\Export\DSVExport
     {
         $this->withBOM = $withBOM;
 

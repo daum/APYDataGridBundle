@@ -26,7 +26,7 @@ class Entity extends Source
 {
     const DOT_DQL_ALIAS_PH = '__dot__';
     const COLON_DQL_ALIAS_PH = '__col__';
-	
+
     /**
      * @var \Doctrine\ORM\EntityManager
      */
@@ -129,7 +129,7 @@ class Entity extends Source
         $this->setTableAlias(self::TABLE_ALIAS);
     }
 
-    public function initialise($container)
+    public function initialise($container): void
     {
         $doctrine = $container->get('doctrine');
 
@@ -151,7 +151,7 @@ class Entity extends Source
      * @param \APY\DataGridBundle\Grid\Column\Column $column
      * @return string
      */
-    protected function getFieldName($column, $withAlias = false)
+    protected function getFieldName($column, $withAlias = false): string
     {
         $name = $column->getField();
 
@@ -218,7 +218,7 @@ class Entity extends Source
      * @param string $fieldName
      * @return string
      */
-    protected function getGroupByFieldName($fieldName)
+    protected function getGroupByFieldName($fieldName): string
     {
         if (strpos($fieldName, '.') !== false) {
             $previousParent = '';
@@ -244,9 +244,9 @@ class Entity extends Source
 
     /**
      * @param \APY\DataGridBundle\Grid\Columns $columns
-     * @return null
+     * @return void
      */
-    public function getColumns($columns)
+    public function getColumns($columns): void
     {
         foreach ($this->metadata->getColumnsFromMapping($columns) as $column) {
             $columns->addColumn($column);
@@ -310,7 +310,7 @@ class Entity extends Source
     /**
      * @return QueryBuilder
      */
-    protected function getQueryBuilder()
+    protected function getQueryBuilder(): QueryBuilder
     {
         //If a custom QB has been provided, use that
         //Otherwise create our own basic one
@@ -331,7 +331,7 @@ class Entity extends Source
      * @param int $gridDataJunction  Grid data junction
      * @return \APY\DataGridBundle\Grid\Rows
      */
-    public function execute($columns, $page = 0, $limit = 0, $maxResults = null, $gridDataJunction = Column::DATA_CONJUNCTION)
+    public function execute($columns, $page = 0, $limit = 0, $maxResults = null, $gridDataJunction = Column::DATA_CONJUNCTION): \APY\DataGridBundle\Grid\Rows
     {
         $this->query = $this->getQueryBuilder();
         $this->querySelectfromSource = clone $this->query;
@@ -386,7 +386,7 @@ class Entity extends Source
                         $q = $this->query->expr()->$operator($this->getFieldName($column, false), "?$bindIndex");
                     }
 
-		    if ($filter->getOperator() == Column::OPERATOR_NLIKE) {
+                    if ($filter->getOperator() == Column::OPERATOR_NLIKE) {
                         $q = $this->query->expr()->not($q);
                     }
 
@@ -398,7 +398,7 @@ class Entity extends Source
                         $fieldName = "LOWER($fieldName)";
                         $bindIndexPlaceholder = "LOWER($bindIndexPlaceholder)";
                     }
-                    
+
                     $q = $this->query->expr()->$operator($fieldName, $bindIndexPlaceholder);
 
                     if ($filter->getOperator() == Column::OPERATOR_NLIKE || $filter->getOperator() == Column::OPERATOR_NSLIKE) {
@@ -516,7 +516,7 @@ class Entity extends Source
         return $result;
     }
 
-    public function getTotalCount($maxResults = null)
+    public function getTotalCount($maxResults = null): int
     {
         // Doctrine Bug Workaround: http://www.doctrine-project.org/jira/browse/DDC-1927
         $countQueryBuilder = clone $this->query;
@@ -578,16 +578,16 @@ class Entity extends Source
             $mapping = $this->ormMetadata->getFieldMapping($name);
             $values = array('title' => $name, 'source' => true);
 
-            if (isset($mapping['fieldName'])) {
-                $values['field'] = $mapping['fieldName'];
-                $values['id'] = $mapping['fieldName'];
+            if (isset($mapping->fieldName)) {
+                $values['field'] = $mapping->fieldName;
+                $values['id'] = $mapping->fieldName;
             }
 
-            if (isset($mapping['id']) && $mapping['id'] == 'id') {
+            if (isset($mapping->id) && $mapping->id == 'id') {
                 $values['primary'] = true;
             }
 
-            switch ($mapping['type']) {
+            switch ($mapping->type) {
                 case 'string':
                 case 'text':
                     $values['type'] = 'text';
@@ -721,14 +721,14 @@ class Entity extends Source
      * @param callable $callback
      * @return $this
      */
-    public function manipulateCountQuery($callback = null)
+    public function manipulateCountQuery($callback = null): static
     {
         $this->prepareCountQueryCallback = $callback;
 
         return $this;
     }
 
-    public function delete(array $ids)
+    public function delete(array $ids): void
     {
         $repository = $this->getRepository();
 
@@ -790,11 +790,11 @@ class Entity extends Source
     /**
      * @return string
      */
-    public function getTableAlias()
+    public function getTableAlias(): string
     {
         return $this->tableAlias;
     }
-	
+
     protected function fromColIdToAlias($colId)
     {
         return str_replace(['.', ':'], [self::DOT_DQL_ALIAS_PH, self::COLON_DQL_ALIAS_PH], $colId);

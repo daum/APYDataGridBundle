@@ -31,7 +31,7 @@ class BooleanColumn extends Column
         $this->setValues($this->getParam('values', array(1 => 'true', 0 => 'false')));
     }
 
-    public function isQueryValid($query)
+    public function isQueryValid($query): bool
     {
         $query = (array) $query;
         if ($query[0] === true || $query[0] === false || $query[0] == 0 || $query[0] == 1 ) {
@@ -41,7 +41,7 @@ class BooleanColumn extends Column
         return false;
     }
 
-    public function renderCell($value, $row, $router)
+    public function renderCell($value, $row, $router): string
     {
         $value = parent::renderCell($value, $row, $router);
 

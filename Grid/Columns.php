@@ -31,7 +31,7 @@ class Columns implements \IteratorAggregate, \Countable
         $this->securityContext = $securityContext;
     }
 
-    public function getIterator($showOnlySourceColumns = false)
+    public function getIterator($showOnlySourceColumns = false): \Traversable
     {
         return new ColumnsIterator(new \ArrayIterator($this->columns), $showOnlySourceColumns);
     }
@@ -42,7 +42,7 @@ class Columns implements \IteratorAggregate, \Countable
      * @param int $position
      * @return Columns
      */
-    public function addColumn(Column $column, $position = 0)
+    public function addColumn(Column $column, $position = 0): Columns
     {
         $column->setSecurityContext($this->securityContext);
 
@@ -94,7 +94,7 @@ class Columns implements \IteratorAggregate, \Countable
         throw new \InvalidArgumentException('Primary column doesn\'t exists');
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->columns);
     }
@@ -136,7 +136,7 @@ class Columns implements \IteratorAggregate, \Countable
      *
      * @return self
      */
-    public function setColumnsOrder(array $columnIds, $keepOtherColumns = true)
+    public function setColumnsOrder(array $columnIds, $keepOtherColumns = true): \APY\DataGridBundle\Grid\Columns
     {
         $reorderedColumns = array();
         $columnsIndexedByIds = array();

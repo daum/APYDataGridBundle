@@ -54,7 +54,7 @@ class GridBuilder extends GridConfigBuilder implements GridBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function add($name, $type, array $options = array())
+    public function add($name, $type, array $options = array()): GridBuilderInterface
     {
         if (!$type instanceof Column) {
             if (!is_string($type)) {
@@ -72,7 +72,7 @@ class GridBuilder extends GridConfigBuilder implements GridBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name)
+    public function get($name): Column
     {
         if (!$this->has($name)) {
             throw new InvalidArgumentException(sprintf('The column with the name "%s" does not exist.', $name));
@@ -86,7 +86,7 @@ class GridBuilder extends GridConfigBuilder implements GridBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function has($name)
+    public function has($name): bool
     {
         return isset($this->columns[$name]);
     }
@@ -94,7 +94,7 @@ class GridBuilder extends GridConfigBuilder implements GridBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($name)
+    public function remove($name): GridBuilderInterface
     {
         unset($this->columns[$name]);
 
@@ -104,7 +104,7 @@ class GridBuilder extends GridConfigBuilder implements GridBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getGrid()
+    public function getGrid(): Grid
     {
         $config = $this->getGridConfig();
 

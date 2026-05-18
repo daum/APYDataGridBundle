@@ -188,7 +188,7 @@ abstract class Column
      * @param $router
      * @return string
      */
-    public function renderCell($value, $row, $router)
+    public function renderCell($value, $row, $router): string
     {
         if (is_callable($this->callback)) {
             return call_user_func($this->callback, $value, $row, $router);
@@ -208,7 +208,7 @@ abstract class Column
      * @param  $callback
      * @return self
      */
-    public function manipulateRenderCell($callback)
+    public function manipulateRenderCell($callback): \APY\DataGridBundle\Grid\Column\Column
     {
         $this->callback = $callback;
 
@@ -221,7 +221,7 @@ abstract class Column
      * @param $id
      * @return self
      */
-    public function setId($id)
+    public function setId($id): \APY\DataGridBundle\Grid\Column\Column
     {
         $this->id = $id;
 
@@ -233,7 +233,7 @@ abstract class Column
      *
      * @return int|string
      */
-    public function getId()
+    public function getId(): int|string
     {
         return $this->id;
     }
@@ -243,7 +243,7 @@ abstract class Column
      *
      * @return int|string
      */
-    public function getRenderBlockId()
+    public function getRenderBlockId(): int|string
     {
         // For Mapping fields and aggregate dql functions
         return str_replace(array('.', ':'), '_', $this->id);
@@ -255,7 +255,7 @@ abstract class Column
      * @param string $title
      * @return \APY\DataGridBundle\Grid\Column\Column
      */
-    public function setTitle($title)
+    public function setTitle($title): \APY\DataGridBundle\Grid\Column\Column
     {
         $this->title = $title;
 
@@ -267,7 +267,7 @@ abstract class Column
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -279,7 +279,7 @@ abstract class Column
      * @param boolean $visible
      * @return $this
      */
-    public function setVisible($visible)
+    public function setVisible($visible): static
     {
         $this->visible = $visible;
 
@@ -291,7 +291,7 @@ abstract class Column
      *
      * @return bool return true when column is visible
      */
-    public function isVisible($isExported = false)
+    public function isVisible($isExported = false): bool
     {
         $visible = $isExported && $this->export !== null ? $this->export : $this->visible;
 
@@ -307,7 +307,7 @@ abstract class Column
      *
      * @return bool return true when column is sorted
      */
-    public function isSorted()
+    public function isSorted(): bool
     {
         return $this->isSorted;
     }
@@ -324,7 +324,7 @@ abstract class Column
      *
      * @return bool return true when column can be sorted
      */
-    public function isSortable()
+    public function isSortable(): bool
     {
         return $this->sortable;
     }
@@ -334,7 +334,7 @@ abstract class Column
      *
      * @return boolean return true when column is filtered
      */
-    public function isFiltered()
+    public function isFiltered(): bool
     {
         return ( (isset($this->data['from']) && $this->isQueryValid($this->data['from']) && $this->data['from'] != static::DEFAULT_VALUE)
             || (isset($this->data['to']) && $this->isQueryValid($this->data['to']) && $this->data['to'] != static::DEFAULT_VALUE)
@@ -353,7 +353,7 @@ abstract class Column
      *
      * @return bool return true when column can be filtred
      */
-    public function isFilterable()
+    public function isFilterable(): bool
     {
         return $this->filterable;
     }
@@ -364,7 +364,7 @@ abstract class Column
      * @param string $order asc|desc
      * @return \APY\DataGridBundle\Grid\Column\Column
      */
-    public function setOrder($order)
+    public function setOrder($order): \APY\DataGridBundle\Grid\Column\Column
     {
         if ($order !== null) {
             $this->order = $order;
@@ -379,7 +379,7 @@ abstract class Column
      *
      * @return string asc|desc
      */
-    public function getOrder()
+    public function getOrder(): ?string
     {
         return $this->order;
     }
@@ -390,7 +390,7 @@ abstract class Column
      * @param int $size in pixels
      * @return \APY\DataGridBundle\Grid\Column\Column
      */
-    public function setSize($size)
+    public function setSize($size): \APY\DataGridBundle\Grid\Column\Column
     {
         if ($size < -1) {
             throw new \InvalidArgumentException(sprintf('Unsupported column size %s, use positive value or -1 for auto resize', $size));
@@ -406,7 +406,7 @@ abstract class Column
      *
      * @return int column width in pixels
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
@@ -417,7 +417,7 @@ abstract class Column
      * @param  $data
      * @return \APY\DataGridBundle\Grid\Column\Column
      */
-    public function setData($data)
+    public function setData($data): \APY\DataGridBundle\Grid\Column\Column
     {
         $this->data = array('operator' => $this->getDefaultOperator(), 'from' => static::DEFAULT_VALUE, 'to' => static::DEFAULT_VALUE);
 
@@ -445,7 +445,7 @@ abstract class Column
      *
      * @return array data
      */
-    public function getData()
+    public function getData(): array
     {
         $result = [];
 
@@ -473,7 +473,7 @@ abstract class Column
      *
      * @return boolean
      */
-    public function isQueryValid($query)
+    public function isQueryValid($query): bool
     {
         return true;
     }
@@ -483,7 +483,7 @@ abstract class Column
      * @param $visibleForSource
      * @return \APY\DataGridBundle\Grid\Column\Column
      */
-    public function setVisibleForSource($visibleForSource)
+    public function setVisibleForSource($visibleForSource): \APY\DataGridBundle\Grid\Column\Column
     {
         $this->visibleForSource = $visibleForSource;
 
@@ -494,7 +494,7 @@ abstract class Column
      * Return true is column in visible for source class
      * @return boolean
      */
-    public function isVisibleForSource()
+    public function isVisibleForSource(): bool
     {
         return $this->visibleForSource;
     }
@@ -505,7 +505,7 @@ abstract class Column
      * @param boolean $primary
      * @return $this
      */
-    public function setPrimary($primary)
+    public function setPrimary($primary): static
     {
         $this->primary = $primary;
 
@@ -516,7 +516,7 @@ abstract class Column
      * Return true is column in primary
      * @return boolean
      */
-    public function isPrimary()
+    public function isPrimary(): bool
     {
         return $this->primary;
     }
@@ -526,7 +526,7 @@ abstract class Column
      * @param string $align left/right/center
      * @return $this
      */
-    public function setAlign($align)
+    public function setAlign($align): static
     {
         if (!in_array($align, self::$aligns)) {
             throw new \InvalidArgumentException(sprintf('Unsupported align %s, just left, right and center are supported', $align));
@@ -541,7 +541,7 @@ abstract class Column
      * get column align
      * @return bool
      */
-    public function getAlign()
+    public function getAlign(): bool
     {
         return $this->align;
     }
@@ -665,7 +665,7 @@ abstract class Column
      *
      * @return bool self::DATA_CONJUNCTION | self::DATA_DISJUNCTION
      */
-    public function getDataJunction()
+    public function getDataJunction(): bool
     {
         return $this->dataJunction;
     }
@@ -682,7 +682,7 @@ abstract class Column
      *
      * @return array $operators
      */
-    public function getOperators()
+    public function getOperators(): array
     {
         // Issue with Doctrine (See http://www.doctrine-project.org/jira/browse/DDC-1857 and http://www.doctrine-project.org/jira/browse/DDC-1858)
         if ($this->hasDQLFunction()) {
@@ -721,7 +721,7 @@ abstract class Column
      * @param string $operator
      * @return boolean
      */
-    public function hasOperator($operator)
+    public function hasOperator($operator): bool
     {
         return in_array($operator, $this->operators);
     }
@@ -795,7 +795,7 @@ abstract class Column
      * @param $securityContext
      * @return $this
      */
-    public function setSecurityContext(AuthorizationCheckerInterface $securityContext)
+    public function setSecurityContext(AuthorizationCheckerInterface $securityContext): static
     {
         $this->securityContext = $securityContext;
 
@@ -841,7 +841,7 @@ abstract class Column
      * @param string|bool $safeOption can be one of false, html, js, css, url, html_attr
      * @return \APY\DataGridBundle\Grid\Column\Column
      */
-    public function setSafe($safeOption)
+    public function setSafe($safeOption): \APY\DataGridBundle\Grid\Column\Column
     {
         $this->safe = $safeOption;
 
@@ -957,7 +957,7 @@ abstract class Column
     /**
      * @return mixed
      */
-    public function getAllowUserToToggleVisibility()
+    public function getAllowUserToToggleVisibility(): mixed
     {
         return $this->allowUserToToggleVisibility;
     }

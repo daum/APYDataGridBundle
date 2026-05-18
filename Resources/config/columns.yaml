@@ -1,0 +1,79 @@
+parameters:
+    grid.column.text.class: APY\DataGridBundle\Grid\Column\TextColumn
+    grid.column.number.class: APY\DataGridBundle\Grid\Column\NumberColumn
+    grid.column.boolean.class: APY\DataGridBundle\Grid\Column\BooleanColumn
+    grid.column.datetime.class: APY\DataGridBundle\Grid\Column\DateTimeColumn
+    grid.column.date.class: APY\DataGridBundle\Grid\Column\DateColumn
+    grid.column.time.class: APY\DataGridBundle\Grid\Column\TimeColumn
+    grid.column.array.class: APY\DataGridBundle\Grid\Column\ArrayColumn
+    grid.column.simple_array.class: APY\DataGridBundle\Grid\Column\SimpleArrayColumn
+    grid.column.blank.class: APY\DataGridBundle\Grid\Column\BlankColumn
+    grid.column.rank.class: APY\DataGridBundle\Grid\Column\RankColumn
+    grid.column.join.class: APY\DataGridBundle\Grid\Column\JoinColumn
+
+services:
+    grid.column.text:
+        class: '%grid.column.text.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.number:
+        class: '%grid.column.number.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.boolean:
+        class: '%grid.column.boolean.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.datetime:
+        class: '%grid.column.datetime.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.date:
+        class: '%grid.column.date.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.time:
+        class: '%grid.column.time.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.array:
+        class: '%grid.column.array.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.simple_array:
+        class: '%grid.column.simple_array.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.blank:
+        class: '%grid.column.blank.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.rank:
+        class: '%grid.column.rank.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }
+
+    grid.column.join:
+        class: '%grid.column.join.class%'
+        public: false
+        tags:
+            - { name: grid.column.extension }

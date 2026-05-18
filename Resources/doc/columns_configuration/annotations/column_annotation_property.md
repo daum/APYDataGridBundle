@@ -1,7 +1,7 @@
-Column Annotation for a property
+Column Attribute for a property
 ================================
 
-The Column annotation for a property allows to add a mapped source column.
+The Column attribute for a property allows to add a mapped source column.
 
 #### Example
 ```php
@@ -11,35 +11,26 @@ use APY\DataGridBundle\Grid\Mapping as GRID;
 ...
 class Product
 {
-    /**
-     * @ORM\Column(name="id", type="integer")
-     *
-     * @GRID\Column(title="my own column name", size="120", type="text")
-     * @GRID\Column(title="other name", size="80", type="text", groups={"admin", "backend"})
-     * @GRID\Column(visible=false, groups="total")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[GRID\Column(title: 'my own column name', size: '120', type: 'text')]
+    #[GRID\Column(title: 'other name', size: '80', type: 'text', groups: ['admin', 'backend'])]
+    #[GRID\Column(visible: false, groups: 'total')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length="32")
-     *
-     * @GRID\Column(title="Type", size="120", filterable=false, filter="select",  selectFrom="values", values={"type1"="Type 1","type2"="Type 2"}, groups={"default", "admin", "backend", "total"})
-     */
+    #[ORM\Column(type: 'string', length: 32)]
+    #[GRID\Column(title: 'Type', size: '120', filterable: false, filter: 'select', selectFrom: 'values', values: ['type1' => 'Type 1', 'type2' => 'Type 2'], groups: ['default', 'admin', 'backend', 'total'])]
     protected $type;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
-     *
-     * @GRID\Column(field="category.name", title="Category Name")
-     */
+    #[ORM\ManyToOne(targetEntity: 'Category', inversedBy: 'products')]
+    #[ORM\JoinColumn(name: 'category_id', referencedColumnName: 'id')]
+    #[GRID\Column(field: 'category.name', title: 'Category Name')]
     protected $category;
 }
 ```
 
 ## Available Attributes
 
-**If you use the `columns` attribute of the [source annotation](https://github.com/Abhoryo/APYDataGridBundle/blob/master/Resources/doc/columns_configuration/annotations/source_annotation.md), only the columns defined in this attribute can use attributes `visible` and `export` but others attributes like `filterable` and `sortable` will work even if the visible attribute is set to `false`.**
+**If you use the `columns` argument of the [source attribute](https://github.com/Abhoryo/APYDataGridBundle/blob/master/Resources/doc/columns_configuration/annotations/source_annotation.md), only the columns defined in this argument can use attributes `visible` and `export` but others attributes like `filterable` and `sortable` will work even if the visible attribute is set to `false`.**
 
 |Attribute|Type|Default value|Possible values|Description|
 |:--:|:--|:--|:--|:--|
@@ -80,9 +71,8 @@ For the column title of the grid `type__abbr` will be search and `type` will be 
 
 ### Automatic translation extraction via JMSTranslationBundle
 
-A translation extractor is included that can discover column titles defined in the annotations.  Running
+A translation extractor is included that can discover column titles defined in the attributes. Running
 [JMSTranslationBundle](https://github.com/schmittjoh/JMSTranslationBundle) via the command line will automatically
 discover and catalogue titles as translation keys.
-
 
 

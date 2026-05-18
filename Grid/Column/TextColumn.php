@@ -16,7 +16,7 @@ use APY\DataGridBundle\Grid\Filter;
 
 class TextColumn extends Column
 {
-    public function isQueryValid($query)
+    public function isQueryValid($query): bool
     {
         $result = array_filter((array) $query, "is_string");
 

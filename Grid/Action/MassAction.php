@@ -17,6 +17,7 @@ class MassAction implements MassActionInterface
     protected $title;
     protected $callback;
     protected $confirm;
+    protected $confirmMessage;
     protected $parameters = array();
     protected $role;
 
@@ -46,7 +47,7 @@ class MassAction implements MassActionInterface
      *
      * @return self
      */
-    public function setTitle($title)
+    public function setTitle($title): \APY\DataGridBundle\Grid\Action\MassAction
     {
         $this->title = $title;
 
@@ -58,7 +59,7 @@ class MassAction implements MassActionInterface
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -70,7 +71,7 @@ class MassAction implements MassActionInterface
      *
      * @return self
      */
-    public function setCallback($callback)
+    public function setCallback($callback): \APY\DataGridBundle\Grid\Action\MassAction
     {
         $this->callback = $callback;
 
@@ -82,7 +83,7 @@ class MassAction implements MassActionInterface
      *
      * @return string
      */
-    public function getCallback()
+    public function getCallback(): string
     {
         return $this->callback;
     }
@@ -94,7 +95,7 @@ class MassAction implements MassActionInterface
      *
      * @return self
      */
-    public function setConfirm($confirm)
+    public function setConfirm($confirm): \APY\DataGridBundle\Grid\Action\MassAction
     {
         $this->confirm = $confirm;
 
@@ -106,7 +107,7 @@ class MassAction implements MassActionInterface
      *
      * @return boolean
      */
-    public function getConfirm()
+    public function getConfirm(): bool
     {
         return $this->confirm;
     }
@@ -118,7 +119,7 @@ class MassAction implements MassActionInterface
      *
      * @return self
      */
-    public function setConfirmMessage($confirmMessage)
+    public function setConfirmMessage($confirmMessage): \APY\DataGridBundle\Grid\Action\MassAction
     {
         $this->confirmMessage = $confirmMessage;
 
@@ -130,7 +131,7 @@ class MassAction implements MassActionInterface
      *
      * @return string
      */
-    public function getConfirmMessage()
+    public function getConfirmMessage(): string
     {
         return $this->confirmMessage;
     }
@@ -141,7 +142,7 @@ class MassAction implements MassActionInterface
      * @param array $parameters
      * @return $this
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): static
     {
         $this->parameters = $parameters;
 
@@ -153,7 +154,7 @@ class MassAction implements MassActionInterface
      *
      * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -165,7 +166,7 @@ class MassAction implements MassActionInterface
      *
      * @return self
      */
-    public function setRole($role)
+    public function setRole($role): \APY\DataGridBundle\Grid\Action\MassAction
     {
         $this->role = $role;
 
@@ -177,7 +178,7 @@ class MassAction implements MassActionInterface
      *
      * @return mixed
      */
-    public function getRole()
+    public function getRole(): mixed
     {
         return $this->role;
     }

@@ -1,10 +1,10 @@
-# Columns Configuration with Annotations
+# Columns Configuration with Attributes
 
-## Annotations
+## Attributes
 
-* [Source Annotation](annotations/source_annotation.md)
-* [Column Annotation for a property](annotations/column_annotation_property.md)
-* [Column Annotation for a class](annotations/column_annotation_class.md)
+* [Source Attribute](annotations/source_annotation.md)
+* [Column Attribute for a property](annotations/column_annotation_property.md)
+* [Column Attribute for a class](annotations/column_annotation_class.md)
 * [ORM Association Mapping](annotations/association_mapping.md)
 * [DQL Functions](annotations/dql_function.md)
 	

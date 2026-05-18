@@ -51,7 +51,7 @@ class Vector extends Source
         $this->setColumns($columns);
     }
 
-    public function initialise($container)
+    public function initialise($container): void
     {
         if (!empty($this->data)) {
             $this->guessColumns();
@@ -143,9 +143,9 @@ class Vector extends Source
 
     /**
      * @param \APY\DataGridBundle\Grid\Columns $columns
-     * @return null
+     * @return void
      */
-    public function getColumns($columns)
+    public function getColumns($columns): void
     {
         $token = empty($this->id); //makes the first column primary by default
 
@@ -193,7 +193,7 @@ class Vector extends Source
      * @param int $gridDataJunction  Grid data junction
      * @return \APY\DataGridBundle\Grid\Rows
      */
-    public function execute($columns, $page = 0, $limit = 0, $maxResults = null, $gridDataJunction = Column::DATA_CONJUNCTION)
+    public function execute($columns, $page = 0, $limit = 0, $maxResults = null, $gridDataJunction = Column::DATA_CONJUNCTION): \APY\DataGridBundle\Grid\Rows
     {
         return $this->executeFromData($columns, $page, $limit, $maxResults);
     }
@@ -203,7 +203,7 @@ class Vector extends Source
         $this->populateSelectFiltersFromData($columns, $loop);
     }
 
-    public function getTotalCount($maxResults = null)
+    public function getTotalCount($maxResults = null): int
     {
         return $this->getTotalCountFromData($maxResults);
     }
@@ -227,7 +227,7 @@ class Vector extends Source
      * @param array $data
      * @throws \InvalidArgumentException
      */
-    public function setData($data)
+    public function setData($data): void
     {
         $this->data = $data;
 
@@ -247,7 +247,7 @@ class Vector extends Source
         }
     }
 
-    public function delete(array $ids)
+    public function delete(array $ids): void
     {
     }
 

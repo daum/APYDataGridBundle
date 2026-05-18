@@ -19,33 +19,33 @@ interface MassActionInterface
      *
      * @return string
      */
-    public function getTitle();
+    public function getTitle(): string;
 
     /**
      * get action callback
      *
      * @return string
      */
-    public function getCallback();
+    public function getCallback(): string;
 
     /**
      * get action confirm
      *
      * @return boolean
      */
-    public function getConfirm();
+    public function getConfirm(): bool;
 
     /**
      * get action confirmMessage
      *
-     * @return boolean
+     * @return string
      */
-    public function getConfirmMessage();
+    public function getConfirmMessage(): string;
 
     /**
      * get additional parameters
      *
      * @return array
      */
-    public function getParameters();
+    public function getParameters(): array;
 }

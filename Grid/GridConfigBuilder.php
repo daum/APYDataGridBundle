@@ -107,7 +107,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -115,7 +115,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSource()
+    public function getSource(): Source
     {
         return $this->source;
     }
@@ -127,7 +127,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setSource(Source $source)
+    public function setSource(Source $source): static
     {
         $this->source = $source;
 
@@ -137,7 +137,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): GridTypeInterface
     {
         return $this->type;
     }
@@ -149,7 +149,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setType(GridTypeInterface $type)
+    public function setType(GridTypeInterface $type): static
     {
         $this->type = $type;
 
@@ -159,7 +159,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->route;
     }
@@ -171,7 +171,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setRoute($route)
+    public function setRoute($route): static
     {
         $this->route = $route;
 
@@ -181,7 +181,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return $this->routeParameters;
     }
@@ -193,7 +193,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setRouteParameters($routeParameters)
+    public function setRouteParameters($routeParameters): static
     {
         $this->routeParameters = $routeParameters;
 
@@ -203,7 +203,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function isPersisted()
+    public function isPersisted(): bool
     {
         return $this->persistence;
     }
@@ -215,7 +215,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setPersistence($persistence)
+    public function setPersistence($persistence): static
     {
         $this->persistence = $persistence;
 
@@ -225,7 +225,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getPage()
+    public function getPage(): int
     {
         return $this->page;
     }
@@ -237,7 +237,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setPage($page)
+    public function setPage($page): static
     {
         $this->page = $page;
 
@@ -247,7 +247,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -255,7 +255,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function hasOption($name)
+    public function hasOption($name): bool
     {
         return array_key_exists($name, $this->options);
     }
@@ -263,7 +263,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getOption($name, $default = null)
+    public function getOption($name, $default = null): mixed
     {
         return array_key_exists($name, $this->options) ? $this->options[$name] : $default;
     }
@@ -271,7 +271,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getMaxPerPage()
+    public function getMaxPerPage(): int
     {
         return $this->limit;
     }
@@ -283,7 +283,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setMaxPerPage($limit)
+    public function setMaxPerPage($limit): static
     {
         $this->limit = $limit;
 
@@ -295,7 +295,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return int
      */
-    public function getMaxResults()
+    public function getMaxResults(): int
     {
         return $this->maxResults;
     }
@@ -307,7 +307,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setMaxResults($maxResults)
+    public function setMaxResults($maxResults): static
     {
         $this->maxResults = $maxResults;
 
@@ -317,7 +317,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function isSortable()
+    public function isSortable(): bool
     {
         return $this->sortable;
     }
@@ -329,7 +329,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setSortable($sortable)
+    public function setSortable($sortable): static
     {
         $this->sortable = $sortable;
 
@@ -339,7 +339,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function isFilterable()
+    public function isFilterable(): bool
     {
         return $this->filterable;
     }
@@ -351,7 +351,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setFilterable($filterable)
+    public function setFilterable($filterable): static
     {
         $this->filterable = $filterable;
 
@@ -361,7 +361,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrder()
+    public function getOrder(): string
     {
         return $this->order;
     }
@@ -373,7 +373,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setOrder($order)
+    public function setOrder($order): static
     {
         $this->order = $order;
 
@@ -383,7 +383,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSortBy()
+    public function getSortBy(): string
     {
         return $this->sortBy;
     }
@@ -395,7 +395,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setSortBy($sortBy)
+    public function setSortBy($sortBy): static
     {
         $this->sortBy = $sortBy;
 
@@ -405,7 +405,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getGroupBy()
+    public function getGroupBy(): string|array
     {
         return $this->groupBy;
     }
@@ -417,7 +417,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function setGroupBy($groupBy)
+    public function setGroupBy($groupBy): static
     {
         $this->groupBy = $groupBy;
 
@@ -429,7 +429,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
      *
      * @return $this
      */
-    public function addAction(RowActionInterface $action)
+    public function addAction(RowActionInterface $action): static
     {
         $this->actions[$action->getColumn()][] = $action;
 
@@ -439,7 +439,7 @@ class GridConfigBuilder implements GridConfigBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getGridConfig()
+    public function getGridConfig(): GridConfigInterface
     {
         $config = clone $this;
 

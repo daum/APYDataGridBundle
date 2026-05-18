@@ -2,19 +2,15 @@
 
 namespace APY\DataGridBundle\Translation;
 
-use Doctrine\Common\Annotations\AnnotationReader as DoctrineAnnotationReader;
-
-use APY\DataGridBundle\Grid\Mapping\Driver\Annotation;
+use APY\DataGridBundle\Grid\Mapping\Driver\AttributeDriver;
 use APY\DataGridBundle\Grid\Mapping\Metadata\Manager;
 
 use JMS\TranslationBundle\Model\FileSource;
 use JMS\TranslationBundle\Model\Message;
 use JMS\TranslationBundle\Model\MessageCatalogue;
-use JMS\TranslationBundle\Translation\Extractor\FileVisitorInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class ColumnTitleAnnotationTranslationExtractor implements FileVisitorInterface, \PHPParser_NodeVisitor, ContainerAwareInterface
+class ColumnTitleAnnotationTranslationExtractor
 {
     private $annotated;
     private $catalogue;
@@ -60,10 +56,10 @@ class ColumnTitleAnnotationTranslationExtractor implements FileVisitorInterface,
         $traverser->traverse($ast);
 
         if ($this->annotated) {
-            // Get annotations for the class
-            $annotationDriver = new Annotation(new DoctrineAnnotationReader());
-            $manager = new Manager($this->container);
-            $manager->addDriver($annotationDriver, -1);
+            // Get attributes for the class
+            $attributeDriver = new AttributeDriver();
+            $manager = new Manager();
+            $manager->addDriver($attributeDriver, -1);
             $metadata = $manager->getMetadata($this->parsedClassName);
 
             // Save messages for title

@@ -16,7 +16,7 @@ interface GridInterface
      *
      * @return $this
      */
-    public function initialize();
+    public function initialize(): static;
 
     /**
      * Handles filters, sorts, exports, ... .
@@ -25,5 +25,5 @@ interface GridInterface
      *
      * @return void
      */
-    public function handleRequest(Request $request);
+    public function handleRequest(Request $request): void;
 }

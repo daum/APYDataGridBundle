@@ -78,14 +78,14 @@ class NumberColumn extends Column
         $this->setDefaultOperator($this->getParam('defaultOperator', self::OPERATOR_EQ));
     }
 
-    public function isQueryValid($query)
+    public function isQueryValid($query): bool
     {
         $result = array_filter((array) $query, "is_numeric");
 
         return !empty($result);
     }
 
-    public function renderCell($value, $row, $router)
+    public function renderCell($value, $row, $router): string
     {
         if (is_callable($this->callback)) {
             return call_user_func($this->callback, $value, $row, $router);

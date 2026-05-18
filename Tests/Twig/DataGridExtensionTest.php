@@ -11,7 +11,7 @@ use APY\DataGridBundle\Twig\DataGridExtension;
  *
  * @author Quentin FERRER
  */
-class DataGridExtensionTest extends \PHPUnit_Framework_TestCase
+class DataGridExtensionTest extends \PHPUnit\Framework\TestCase
 {
 
     /**
@@ -19,9 +19,9 @@ class DataGridExtensionTest extends \PHPUnit_Framework_TestCase
      */
     private $extension;
 
-    public function setUp()
+    public function setUp(): void
     {
-        $router = $this->getMock('Symfony\Component\Routing\RouterInterface');
+        $router = $this->createMock('Symfony\Component\Routing\RouterInterface');
         $this->extension = new DataGridExtension($router, '');
     }
 
@@ -31,14 +31,16 @@ class DataGridExtensionTest extends \PHPUnit_Framework_TestCase
         $gridHash = 'my_grid';
 
         // Creates grid
-        $grid = $this->getMock('APY\DataGridBundle\Grid\Grid', array(), array(), '', false);
+        $grid = $this->getMockBuilder('APY\DataGridBundle\Grid\Grid')
+            ->disableOriginalConstructor()
+            ->getMock();
         $grid->expects($this->any())->method('getRouteUrl')->willReturn($baseUrl);
         $grid->expects($this->any())->method('getHash')->willReturn($gridHash);
 
         $prefix = $baseUrl . '?' . $gridHash;
 
         // Creates column
-        $column = $this->getMock('APY\DataGridBundle\Grid\Column\Column');
+        $column = $this->createMock('APY\DataGridBundle\Grid\Column\Column');
 
         // Limit
         $this->assertEquals($prefix . '[_limit]=', $this->extension->getGridUrl('limit', $grid, $column));

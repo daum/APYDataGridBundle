@@ -33,12 +33,12 @@ class GridManager implements \IteratorAggregate, \Countable
         $this->grids = new \SplObjectStorage();
     }
 
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->grids;
     }
 
-    public function count()
+    public function count(): int
     {
         return $this->grids->count();
     }
@@ -47,7 +47,7 @@ class GridManager implements \IteratorAggregate, \Countable
      * @param mixed $id
      * @return Grid
      */
-    public function createGrid($id = null)
+    public function createGrid($id = null): Grid
     {
         $grid = $this->container->get('grid');
 
@@ -55,7 +55,7 @@ class GridManager implements \IteratorAggregate, \Countable
             $grid->setId($id);
         }
 
-        $this->grids->attach($grid);
+        $this->grids->offsetSet($grid);
 
         return $grid;
     }
@@ -153,7 +153,7 @@ class GridManager implements \IteratorAggregate, \Countable
      *
      * @return Response A Response instance
      */
-    public function getGridManagerResponse($param1 = null, $param2 = null, Response $response = null)
+    public function getGridManagerResponse($param1 = null, $param2 = null, Response $response = null): Response
     {
         $isReadyForRedirect = $this->isReadyForRedirect();
 

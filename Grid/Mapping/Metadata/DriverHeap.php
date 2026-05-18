@@ -20,7 +20,7 @@ class DriverHeap extends \SplPriorityQueue
      * (non-PHPdoc)
      * @see SplPriorityQueue::compare()
      */
-     public function compare($priority1, $priority2)
+     public function compare($priority1, $priority2): int
      {
          if ($priority1 === $priority2) {
              return 0;

@@ -57,7 +57,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setTitle($title)
+    public function setTitle($title): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->title = $title;
 
@@ -69,7 +69,7 @@ class RowAction implements RowActionInterface
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -81,7 +81,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setRoute($route)
+    public function setRoute($route): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->route = $route;
 
@@ -93,7 +93,7 @@ class RowAction implements RowActionInterface
      *
      * @return string
      */
-    public function getRoute()
+    public function getRoute(): string
     {
         return $this->route;
     }
@@ -105,7 +105,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setConfirm($confirm)
+    public function setConfirm($confirm): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->confirm = $confirm;
 
@@ -117,7 +117,7 @@ class RowAction implements RowActionInterface
      *
      * @return boolean
      */
-    public function getConfirm()
+    public function getConfirm(): bool
     {
         return $this->confirm;
     }
@@ -129,7 +129,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setConfirmMessage($confirmMessage)
+    public function setConfirmMessage($confirmMessage): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->confirmMessage = $confirmMessage;
 
@@ -141,7 +141,7 @@ class RowAction implements RowActionInterface
      *
      * @return string
      */
-    public function getConfirmMessage()
+    public function getConfirmMessage(): string
     {
         return $this->confirmMessage;
     }
@@ -153,7 +153,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setTarget($target)
+    public function setTarget($target): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->target = $target;
 
@@ -165,7 +165,7 @@ class RowAction implements RowActionInterface
      *
      * @return string
      */
-    public function getTarget()
+    public function getTarget(): string
     {
         return $this->target;
     }
@@ -177,7 +177,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setColumn($column)
+    public function setColumn($column): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->column = $column;
 
@@ -187,9 +187,9 @@ class RowAction implements RowActionInterface
     /**
      * get action column
      *
-     * @return \APY\DataGridBundle\Grid\Column\Column
+     * @return string
      */
-    public function getColumn()
+    public function getColumn(): string
     {
         return $this->column;
     }
@@ -201,7 +201,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function addRouteParameters($routeParameters)
+    public function addRouteParameters($routeParameters): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $routeParameters = (array) $routeParameters;
 
@@ -223,7 +223,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setRouteParameters($routeParameters)
+    public function setRouteParameters($routeParameters): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->routeParameters = (array) $routeParameters;
 
@@ -235,7 +235,7 @@ class RowAction implements RowActionInterface
      *
      * @return array
      */
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return $this->routeParameters;
     }
@@ -247,7 +247,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setRouteParametersMapping($routeParametersMapping)
+    public function setRouteParametersMapping($routeParametersMapping): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->routeParametersMapping = (array) $routeParametersMapping;
 
@@ -260,7 +260,7 @@ class RowAction implements RowActionInterface
      * @param string $name parameter
      * @return null|string
      */
-    public function getRouteParametersMapping($name)
+    public function getRouteParametersMapping($name): ?string
     {
         return (isset($this->routeParametersMapping[$name]) ? $this->routeParametersMapping[$name] : null);
     }
@@ -272,7 +272,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setAttributes(array $attributes)
+    public function setAttributes(array $attributes): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->attributes = $attributes;
 
@@ -287,7 +287,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function addAttribute($name, $value)
+    public function addAttribute($name, $value): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->attributes[$name] = $value;
 
@@ -299,7 +299,7 @@ class RowAction implements RowActionInterface
      *
      * @return array
      */
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -311,7 +311,7 @@ class RowAction implements RowActionInterface
      *
      * @return self
      */
-    public function setRole($role)
+    public function setRole($role): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->role = $role;
 
@@ -323,7 +323,7 @@ class RowAction implements RowActionInterface
      *
      * @return mixed
      */
-    public function getRole()
+    public function getRole(): mixed
     {
         return $this->role;
     }
@@ -334,7 +334,7 @@ class RowAction implements RowActionInterface
      * @param  $callback
      * @return self
      */
-    public function manipulateRender($callback)
+    public function manipulateRender($callback): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->callback = $callback;
 
@@ -347,7 +347,7 @@ class RowAction implements RowActionInterface
      * @param \APY\DataGridBundle\Grid\Row $row
      * @return null|RowAction
      */
-    public function render($row)
+    public function render($row): ?RowAction
     {
         if (is_callable($this->callback)) {
             return call_user_func($this->callback, $this, $row);
@@ -361,7 +361,7 @@ class RowAction implements RowActionInterface
      *
      * @return boolean
      */
-    public function getEnabled()
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
@@ -372,7 +372,7 @@ class RowAction implements RowActionInterface
      * @param boolean $enabled
      * @return \APY\DataGridBundle\Grid\Action\RowAction
      */
-    public function setEnabled($enabled)
+    public function setEnabled($enabled): \APY\DataGridBundle\Grid\Action\RowAction
     {
         $this->enabled = $enabled;
 

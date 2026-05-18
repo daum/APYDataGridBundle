@@ -1,0 +1,56 @@
+parameters:
+    grid.twig_extension.class: APY\DataGridBundle\Twig\DataGridExtension
+    grid.class: APY\DataGridBundle\Grid\Grid
+    grid.manager.class: APY\DataGridBundle\Grid\GridManager
+
+services:
+    grid.twig_extension:
+        class: '%grid.twig_extension.class%'
+        public: false
+        arguments:
+            - '@router'
+            - '%apy_data_grid.theme%'
+        tags:
+            - { name: twig.extension }
+        calls:
+            - [setPagerFanta, ['%apy_data_grid.pagerfanta%']]
+
+    grid:
+        class: '%grid.class%'
+        shared: false
+        public: true
+        arguments:
+            - '@service_container'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+            - '@twig'
+        calls:
+            - [setLimits, ['%apy_data_grid.limits%']]
+            - [setPersistence, ['%apy_data_grid.persistence%']]
+            - [setNoDataMessage, ['%apy_data_grid.no_data_message%']]
+            - [setNoResultMessage, ['%apy_data_grid.no_result_message%']]
+            - [setActionsColumnSize, ['%apy_data_grid.actions_columns_size%']]
+            - [setActionsColumnTitle, ['%apy_data_grid.actions_columns_title%']]
+
+    grid.manager:
+        class: '%grid.manager.class%'
+        arguments:
+            - '@service_container'
+
+    grid.metadata.driver.attribute:
+        class: APY\DataGridBundle\Grid\Mapping\Driver\AttributeDriver
+
+    grid.mapping.manager:
+        class: APY\DataGridBundle\Grid\Mapping\Metadata\Manager
+        shared: false
+        public: true
+        arguments:
+            - '@form.factory'
+        calls:
+            - [addDriver, ['@grid.metadata.driver.attribute', 1]]
+
+    grid.translation_extractor:
+        class: APY\DataGridBundle\Translation\ColumnTitleAnnotationTranslationExtractor
+        public: false
+        tags:
+            - { name: jms_translation.file_visitor }

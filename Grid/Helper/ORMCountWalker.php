@@ -44,7 +44,7 @@ class ORMCountWalker extends TreeWalkerAdapter
      *
      * @throws \RuntimeException
      */
-    public function walkSelectStatement(SelectStatement $AST)
+    public function walkSelectStatement(SelectStatement $AST): void
     {
         $rootComponents = array();
         foreach ($this->_getQueryComponents() AS $dqlAlias => $qComp) {

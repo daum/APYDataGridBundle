@@ -65,7 +65,7 @@ class SimpleArrayColumn extends Column
         return $filters;
     }
 
-    public function renderCell($values, $row, $router)
+    public function renderCell($values, $row, $router): string
     {
         if (is_callable($this->callback)) {
             return call_user_func($this->callback, $values, $row, $router);

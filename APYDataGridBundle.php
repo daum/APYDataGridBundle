@@ -19,7 +19,7 @@ use APY\DataGridBundle\DependencyInjection\Compiler\GridExtensionPass;
 
 class APYDataGridBundle extends Bundle
 {
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 

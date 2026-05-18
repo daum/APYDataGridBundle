@@ -36,7 +36,7 @@ class GridRegistry implements GridRegistryInterface
      *
      * @return $this
      */
-    public function addType(GridTypeInterface $type)
+    public function addType(GridTypeInterface $type): static
     {
         $name = $type->getName();
 
@@ -52,7 +52,7 @@ class GridRegistry implements GridRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getType($name)
+    public function getType($name): GridTypeInterface
     {
         if (!$this->hasType($name)) {
             throw new TypeNotFoundException($name);
@@ -66,7 +66,7 @@ class GridRegistry implements GridRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasType($name)
+    public function hasType($name): bool
     {
         if (isset($this->types[$name])) {
             return true;
@@ -82,7 +82,7 @@ class GridRegistry implements GridRegistryInterface
      *
      * @return $this
      */
-    public function addColumn(Column $column)
+    public function addColumn(Column $column): static
     {
         $type = $column->getType();
 
@@ -98,7 +98,7 @@ class GridRegistry implements GridRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getColumn($type)
+    public function getColumn($type): Column
     {
         if (!$this->hasColumn($type)) {
             throw new ColumnNotFoundException($type);
@@ -112,7 +112,7 @@ class GridRegistry implements GridRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function hasColumn($type)
+    public function hasColumn($type): bool
     {
         if (isset($this->columns[$type])) {
             return true;

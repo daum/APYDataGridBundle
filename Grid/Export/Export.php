@@ -12,11 +12,10 @@
 
 namespace APY\DataGridBundle\Grid\Export;
 
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class Export implements ExportInterface, ContainerAwareInterface
+abstract class Export implements ExportInterface
 {
     const DEFAULT_TEMPLATE = 'APYDataGridBundle::blocks.html.twig';
 
@@ -85,7 +84,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return ContainerInterface
      */
-    public function getContainer()
+    public function getContainer(): ContainerInterface
     {
         return $this->container;
     }
@@ -95,7 +94,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return Response
      */
-    public function getResponse()
+    public function getResponse(): Response
     {
         // Response
         $kernelCharset = $this->container->getParameter('kernel.charset');
@@ -131,7 +130,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function setContent($content = '')
+    public function setContent($content = ''): \APY\DataGridBundle\Grid\Export\Export
     {
         $this->content = $content;
 
@@ -143,7 +142,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -172,7 +171,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *     )
      * )
      */
-    protected function getGridData($grid)
+    protected function getGridData($grid): array
     {
         $result = array();
 
@@ -223,7 +222,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *      )
      * )
      */
-    protected function getFlatGridData($grid)
+    protected function getFlatGridData($grid): array
     {
         $data = $this->getGridData($grid);
 
@@ -365,7 +364,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      * @param $name string
      * @return boolean
      */
-    protected function hasBlock($name)
+    protected function hasBlock($name): bool
     {
         foreach ($this->getTemplates() as $template) {
             if ($template->hasBlock($name)) {
@@ -383,7 +382,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      * @param $parameters string
      * @return string
      */
-    protected function renderBlock($name, $parameters)
+    protected function renderBlock($name, $parameters): string
     {
         foreach ($this->getTemplates() as $template) {
             if ($template->hasBlock($name)) {
@@ -400,7 +399,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      * @return \Twig_TemplateInterface[]
      * @throws \Exception
      */
-    protected function getTemplates()
+    protected function getTemplates(): array
     {
         if (empty($this->templates)) {
             $this->setTemplate($this->grid->getTemplate());
@@ -416,7 +415,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function setTemplate($template)
+    public function setTemplate($template): \APY\DataGridBundle\Grid\Export\Export
     {
         if (is_string($template)) {
             if (substr($template, 0, 8) === '__SELF__') {
@@ -474,7 +473,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function setTitle($title)
+    public function setTitle($title): \APY\DataGridBundle\Grid\Export\Export
     {
         $this->title = $title;
 
@@ -486,7 +485,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -498,7 +497,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function setFileName($fileName)
+    public function setFileName($fileName): \APY\DataGridBundle\Grid\Export\Export
     {
         $this->fileName = $fileName;
 
@@ -510,7 +509,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
@@ -522,7 +521,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function setFileExtension($fileExtension)
+    public function setFileExtension($fileExtension): \APY\DataGridBundle\Grid\Export\Export
     {
         $this->fileExtension = $fileExtension;
 
@@ -534,7 +533,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return string
      */
-    public function getFileExtension()
+    public function getFileExtension(): string
     {
         return $this->fileExtension;
     }
@@ -544,7 +543,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return string
      */
-    public function getBaseName()
+    public function getBaseName(): string
     {
         return $this->fileName.(isset($this->fileExtension) ? ".$this->fileExtension" : '');
     }
@@ -556,7 +555,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function setMimeType($mimeType)
+    public function setMimeType($mimeType): \APY\DataGridBundle\Grid\Export\Export
     {
         $this->mimeType = $mimeType;
 
@@ -568,7 +567,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return string
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         return $this->mimeType;
     }
@@ -580,7 +579,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function setCharset($charset)
+    public function setCharset($charset): \APY\DataGridBundle\Grid\Export\Export
     {
         $this->charset = $charset;
 
@@ -592,7 +591,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return string
      */
-    public function getCharset()
+    public function getCharset(): string
     {
         return $this->charset;
     }
@@ -604,7 +603,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function setParameters(array $parameters)
+    public function setParameters(array $parameters): \APY\DataGridBundle\Grid\Export\Export
     {
         $this->parameters = $parameters;
 
@@ -616,7 +615,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return array
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         return $this->parameters;
     }
@@ -626,7 +625,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return mixed
      */
-    public function hasParameter($name)
+    public function hasParameter($name): mixed
     {
         return array_key_exists($name, $this->parameters);
     }
@@ -638,7 +637,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function addParameter($name, $value)
+    public function addParameter($name, $value): \APY\DataGridBundle\Grid\Export\Export
     {
         $this->parameters[$name] = $value;
 
@@ -650,7 +649,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return mixed
      */
-    public function getParameter($name)
+    public function getParameter($name): mixed
     {
         if (!$this->hasParameter($name)) {
             throw new \InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
@@ -666,7 +665,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return self
      */
-    public function setRole($role)
+    public function setRole($role): \APY\DataGridBundle\Grid\Export\Export
     {
         $this->role = $role;
 
@@ -678,7 +677,7 @@ abstract class Export implements ExportInterface, ContainerAwareInterface
      *
      * @return mixed
      */
-    public function getRole()
+    public function getRole(): mixed
     {
         return $this->role;
     }

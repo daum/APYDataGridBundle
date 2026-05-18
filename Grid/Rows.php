@@ -32,7 +32,7 @@ class Rows implements \IteratorAggregate, \Countable
      * (non-PHPdoc)
      * @see IteratorAggregate::getIterator()
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->rows;
     }
@@ -43,9 +43,9 @@ class Rows implements \IteratorAggregate, \Countable
      * @param Row $row
      * @return Rows
      */
-    public function addRow(Row $row)
+    public function addRow(Row $row): Rows
     {
-        $this->rows->attach($row);
+        $this->rows->offsetSet($row);
 
         return $this;
     }
@@ -54,7 +54,7 @@ class Rows implements \IteratorAggregate, \Countable
      * (non-PHPdoc)
      * @see Countable::count()
      */
-    public function count()
+    public function count(): int
     {
         return $this->rows->count();
     }
@@ -64,7 +64,7 @@ class Rows implements \IteratorAggregate, \Countable
      *
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return iterator_to_array($this->getIterator(), true);
     }
